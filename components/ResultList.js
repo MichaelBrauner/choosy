@@ -3,6 +3,7 @@ import Store from "../store";
 import ResultListList from "./ResultListList";
 import classnames from "../classnames";
 import Navigation from "./Navigation";
+import ResultListVoter from "../voter/ResultListVoter";
 
 export default class ResultList {
 
@@ -24,6 +25,10 @@ export default class ResultList {
             this.closeResultBox()
         })
 
+        Event.on('input_pressed_tab', () => {
+            this.closeResultBox()
+        })
+
         Event.on('input_input_debounced', () => {
 
             if (Store.inputIsEmpty) {
@@ -32,22 +37,28 @@ export default class ResultList {
             }
 
             this.list.createListResults()
-            this.openResultBox()
-            this.list.setResultBoxHeight()
+            this.createBox();
         })
 
-        Event.on('widget_focus', () => {
-            if (Store.inputIsEmpty) {
+        Event.on('input_focus', () => {
+            if (ResultListVoter.canOpen()) {
                 this.list.createListAllResults()
-                this.openResultBox()
-                this.list.setResultBoxHeight()
+                this.createBox();
             }
+
         })
+
+    }
+
+    createBox() {
+        this.openResultBox()
+        this.list.setResultBoxHeight()
     }
 
     openResultBox() {
-        if (!this.open)
+        if (!this.open) {
             this.element.style.display = 'block'
+        }
     }
 
     get open() {
@@ -59,7 +70,6 @@ export default class ResultList {
 
         if (this.open)
             this.element.style.display = 'none'
-
         Navigation.clear()
     }
 

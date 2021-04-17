@@ -6,6 +6,7 @@ import classnames from "../../choices/src/classnames";
 import {getLastOfArray} from "../../choices/src/util";
 import Option from "../option";
 import navigationEvents from "../events/navigationEvents";
+import OptionVoter from "../voter/OptionVoter";
 
 export default class TextInput extends Component {
 
@@ -35,6 +36,10 @@ export default class TextInput extends Component {
                 this.backspaceKeyEvent(event)
             }
 
+            if (event.key === 'Tab') {
+                Event.emit('input_pressed_tab')
+            }
+
             navigationEvents.handle(event)
         })
 
@@ -43,6 +48,14 @@ export default class TextInput extends Component {
                 Event.emit('input_input_debounced', event)
             }, 250)
         )
+
+        // this.element.addEventListener('focus', () => {
+        //     Event.emit('input_focus')
+        // })
+
+        this.element.addEventListener('blur', (event) => {
+            Event.emit('input_blur', event)
+        })
 
         Event.on('input_cleared', () => {
             this.element.value = null
@@ -58,7 +71,7 @@ export default class TextInput extends Component {
     }
 
     adjustWidth() {
-        this.element.style.width = `${TextInput.length ? TextInput.length +1 : 1}ch`
+        this.element.style.width = `${TextInput.length ? TextInput.length + 1 : 1}ch`
     }
 
     refreshState() {
@@ -66,7 +79,7 @@ export default class TextInput extends Component {
     }
 
     limit(event) {
-        if (Option.allTaken)
+        if (!OptionVoter.canAdd())
             event.preventDefault()
     }
 
@@ -96,5 +109,14 @@ export default class TextInput extends Component {
 
         event.preventDefault()
         Option.unselect(getLastOfArray(Option.selected))
+    }
+
+    get isFocussed() {
+        return document.activeElement.classList.contains(classnames.input)
+    }
+
+    focus() {
+        if (!this.isFocussed)
+            this.element.focus()
     }
 }

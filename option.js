@@ -9,7 +9,7 @@ export default class Option {
     all
 
     static get all() {
-        return Store.options.all
+        return Store.options.all.filter(option => !!option.content)
     }
 
     static get startingWithInput() {
@@ -142,6 +142,6 @@ export default class Option {
     }
 
     static get allTaken(){
-        return !(Config.textInput.limit > Option.selected.length)
+        return !(Config.textInput.limit > Option.selected?.length)
     }
 }

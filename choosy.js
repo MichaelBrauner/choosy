@@ -2,6 +2,8 @@ import {Widget} from "./components/Widget";
 import Event from "./event";
 import Store from "./store";
 import Config from "./components/Config";
+import classnames from "./classnames";
+import TagList from "./components/TagList";
 
 export class Choosy {
 
@@ -23,11 +25,16 @@ export class Choosy {
 
     clickedOutsideOfWidgetEvent() {
         document.addEventListener('click', event => {
-            if (this.widget.element.contains(event.target))
+
+            if (this.widget.element.contains(event.target) || this.isClickOnTagList(event))
                 return
 
             Event.emit('widget_clicked_outside')
         })
+    }
+
+    isClickOnTagList(event) {
+        return !!event.target.closest(TagList.selector);
     }
 
     initializeData() {
@@ -35,7 +42,7 @@ export class Choosy {
     }
 
     resolveOptions() {
-        if(!this.widget.initialElement.isMultiple)
+        if (!this.widget.initialElement.isMultiple)
             Config.textInput.limit = 1
     }
 }

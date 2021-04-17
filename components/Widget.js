@@ -8,6 +8,8 @@ import Event from "../event";
 import Option from "../option";
 import TagList from "./TagList";
 import Navigation from "./Navigation";
+import OptionVoter from "../voter/OptionVoter";
+import InputVoter from "../voter/InputVoter"
 
 export class Widget {
 
@@ -38,8 +40,8 @@ export class Widget {
 
     registerListeners() {
 
-        this.element.addEventListener('click', () => {
-            this.#focusInput()
+        this.element.addEventListener('click', (event) => {
+            InputVoter.shouldFocusAfterEvent(event) && this.#focusInput()
         })
 
         Event.on('option_chosen', () => {
@@ -55,9 +57,8 @@ export class Widget {
     }
 
     #focusInput() {
-        this.tagList.textInput.element.focus()
-
-        Event.emit('widget_focus')
+        this.tagList.textInput.focus()
+        Event.emit('input_focus')
     }
 
     update() {
@@ -95,7 +96,7 @@ export class Widget {
     }
 
     limit() {
-        if (Option.allTaken) {
+        if (!OptionVoter.canAdd()) {
             this.tagList.textInput.element.maxLength = 0
         } else {
             this.tagList.textInput.element.maxLength = 524288

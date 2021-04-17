@@ -22,6 +22,7 @@ export default class TagList extends Component {
 
     registerEventListeners() {
         this.element.addEventListener('click', event => {
+
             if (this.clickedOnRemoveButton(event.target)) {
                 event.preventDefault()
 
@@ -57,6 +58,10 @@ export default class TagList extends Component {
     findClickedTag(event) {
         return event.target.closest('.' + classnames.item)
             .querySelector('.' + classnames.item_text_span)
+    }
+
+    static get selector() {
+        return '.' + classnames.list
     }
 
 }
