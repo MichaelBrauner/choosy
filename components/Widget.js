@@ -58,7 +58,7 @@ export class Widget {
 
     #focusInput() {
         this.tagList.textInput.focus()
-        Event.emit('input_focus')
+        // Event.emit('input_focus')
     }
 
     update() {

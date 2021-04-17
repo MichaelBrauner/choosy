@@ -21,6 +21,7 @@ export class Choosy {
 
     registerEventListener() {
         this.clickedOutsideOfWidgetEvent()
+        this.windowBlurEvent()
     }
 
     clickedOutsideOfWidgetEvent() {
@@ -30,6 +31,12 @@ export class Choosy {
                 return
 
             Event.emit('widget_clicked_outside')
+        })
+    }
+
+    windowBlurEvent() {
+        window.addEventListener('blur', () => {
+            Event.emit('window_blur')
         })
     }
 

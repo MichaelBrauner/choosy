@@ -1,12 +1,11 @@
 import Component from "./Component";
-import {debounce} from "../util";
+import {debounce, getLastOfArray} from "../util";
 import Event from "../event";
 import Store from "../store";
-import classnames from "../../choices/src/classnames";
-import {getLastOfArray} from "../../choices/src/util";
 import Option from "../option";
 import navigationEvents from "../events/navigationEvents";
 import OptionVoter from "../voter/OptionVoter";
+import classnames from "../classnames";
 
 export default class TextInput extends Component {
 
@@ -49,9 +48,9 @@ export default class TextInput extends Component {
             }, 250)
         )
 
-        // this.element.addEventListener('focus', () => {
-        //     Event.emit('input_focus')
-        // })
+        this.element.addEventListener('focus', () => {
+            Event.emit('input_focus')
+        })
 
         this.element.addEventListener('blur', (event) => {
             Event.emit('input_blur', event)

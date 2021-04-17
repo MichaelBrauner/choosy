@@ -10,6 +10,13 @@ export default class ResultList {
     element
     list
 
+    closeEvents = [
+        'widget_clicked_outside',
+        'input_pressed_esc',
+        'input_pressed_tab',
+        'window_blur'
+    ]
+
     constructor(element) {
         this.element = element
         this.appendList()
@@ -17,16 +24,11 @@ export default class ResultList {
     }
 
     registerEventListener() {
-        Event.on('widget_clicked_outside', () => {
-            this.closeResultBox()
-        })
 
-        Event.on('input_pressed_esc', () => {
-            this.closeResultBox()
-        })
-
-        Event.on('input_pressed_tab', () => {
-            this.closeResultBox()
+        this.closeEvents.forEach(eventName => {
+            Event.on(eventName, () => {
+                this.closeResultBox()
+            })
         })
 
         Event.on('input_input_debounced', () => {

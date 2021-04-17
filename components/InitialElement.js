@@ -1,7 +1,7 @@
 import Component from "./Component";
 import Store from "../store";
 import Option from "../option";
-import elements from "../../choices/src/elements";
+import elements from "../elements";
 import Event from "../event";
 
 export default class InitialElement extends Component {

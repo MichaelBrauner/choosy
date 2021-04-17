@@ -1,8 +1,8 @@
-import elements from "../../choices/src/elements";
-import classnames from "../../choices/src/classnames";
 import Component from "./Component";
 import Option from "../option";
 import TextInput from "./TextInput";
+import classnames from "../classnames";
+import elements from "../elements";
 
 export default class TagList extends Component {
 
