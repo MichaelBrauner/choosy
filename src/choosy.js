@@ -2,8 +2,8 @@ import {Widget} from "./components/Widget";
 import Event from "./event";
 import Store from "./store";
 import Config from "./components/Config";
-import classnames from "./classnames";
 import TagList from "./components/TagList";
+import './style/choosy.css'
 
 export class Choosy {
 

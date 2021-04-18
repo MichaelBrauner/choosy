@@ -1,0 +1,28 @@
+{
+  "name": "choosy",
+  "version": "0.0.1",
+  "description": "A lightweight choice-picker written in vanilla javascript.",
+  "main": "dist/choosy.min.js",
+  "repository": "git@github.com:MichaelBrauner/choosy.git",
+  "author": "Michael Brauner <michaelbrauner82@gmail.com>",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {},
+  "devDependencies": {
+    "autoprefixer": "^10.2.5",
+    "cssnano": "^5.0.1",
+    "postcss": "^8.2.10",
+    "postcss-nested": "^5.0.5",
+    "rollup": "^2.45.2",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-postcss": "^4.0.0",
+    "rollup-plugin-uglify": "^6.0.4"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "rollup -c"
+  },
+  "keywords": [
+    "cookie"
+  ]
+}
