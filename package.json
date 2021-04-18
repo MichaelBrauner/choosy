@@ -1,6 +1,6 @@
 {
-  "name": "choosy",
-  "version": "0.0.1",
+  "name": "@michael-brauner/choosy",
+  "version": "1.0.0",
   "description": "A lightweight choice-picker written in vanilla javascript.",
   "main": "dist/choosy.min.js",
   "repository": "git@github.com:MichaelBrauner/choosy.git",
@@ -19,7 +19,6 @@
     "rollup-plugin-uglify": "^6.0.4"
   },
   "scripts": {
-    "test": "jest",
     "build": "rollup -c"
   },
   "keywords": [
