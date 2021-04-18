@@ -9,9 +9,12 @@ const Event = {
     },
 
     off(eventName, callback) {
-        if (this.subscribers[eventName]){
-            console.log('remove the event')
+        if (callback) {
+            (this.subscribers)[eventName] = this.subscribers[eventName].filter(event => event !== callback)
+            return
         }
+
+        (this.subscribers)[eventName] = []
     },
 
     emit(eventName, data) {

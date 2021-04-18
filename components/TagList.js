@@ -52,6 +52,7 @@ export default class TagList extends Component {
     }
 
     remove() {
+        this.textInput.destroy()
         this.element.remove()
     }
 

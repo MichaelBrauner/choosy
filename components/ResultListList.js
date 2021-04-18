@@ -4,6 +4,7 @@ import Option from "../option";
 import TextInput from "./TextInput";
 import Navigation from "./Navigation";
 import Event from "../event";
+import ResultListVoter from "../voter/ResultListVoter";
 
 export default class ResultListList {
 
@@ -24,14 +25,21 @@ export default class ResultListList {
 
     destroy() {
         this.element.remove()
+
+        Event.off('navigation_action')
+
+    }
+
+    createListAndScroll() {
+        this.createResultList()
+        this.scrollToView()
     }
 
     registerEventListener() {
         this.chooseListener()
 
         Event.on('navigation_action', () => {
-            this.createListResults()
-            this.scrollToView()
+            this.createListAndScroll();
         })
 
     }
@@ -87,6 +95,14 @@ export default class ResultListList {
         this.append(
             Option.all
         )
+    }
+
+    createResultList() {
+        if (ResultListVoter.canOpenAll())
+            this.createListAllResults()
+
+        if (ResultListVoter.canOpen())
+            this.createListResults()
     }
 
     append(options) {
@@ -158,7 +174,14 @@ export default class ResultListList {
     }
 
     static get results() {
-        return TextInput.hasMinLength ? Option.startingWithInput : []
+
+        if (ResultListVoter.canOpenAll())
+            return Option.all ?? []
+
+        if (ResultListVoter.canOpen())
+            return TextInput.hasMinLength ? Option.startingWithInput : []
+
+
     }
 
     setResultBoxHeight() {

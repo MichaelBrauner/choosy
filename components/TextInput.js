@@ -56,9 +56,7 @@ export default class TextInput extends Component {
             Event.emit('input_blur', event)
         })
 
-        Event.on('input_cleared', () => {
-            this.element.value = null
-        })
+        Event.on('input_cleared', this.resetValue)
     }
 
     static get length() {
@@ -94,7 +92,7 @@ export default class TextInput extends Component {
     enterKeyEvent(event) {
         event.preventDefault()
 
-        if (TextInput.hasMinLength)
+        if (TextInput.hasMinLength || OptionVoter.canAdd())
             Option.choose()
     }
 
@@ -117,5 +115,13 @@ export default class TextInput extends Component {
     focus() {
         if (!this.isFocussed)
             this.element.focus()
+    }
+
+    resetValue = () => {
+        this.element.value = null
+    }
+
+    destroy() {
+        Event.off('input_cleared', this.resetValue)
     }
 }

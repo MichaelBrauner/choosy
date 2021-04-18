@@ -1,5 +1,6 @@
 import ResultListList from "./ResultListList";
 import Event from "../event";
+import ResultListVoter from "../voter/ResultListVoter";
 
 export default {
 
@@ -9,7 +10,11 @@ export default {
         const results = ResultListList.results
 
         if (!this.selectedItem) {
-            this.selectedItem = 'add'
+            if (!ResultListVoter.canOpenAll()) {
+                this.selectedItem = 'add'
+            } else {
+                this.selectedItem = results[results.length - 1]
+            }
         } else {
             const index = results.indexOf(this.selectedItem)
 
@@ -22,15 +27,17 @@ export default {
                 }
 
                 if (!results[index - 1]) {
-                    this.selectedItem = 'add'
+                    if (!ResultListVoter.canOpenAll()) {
+                        this.selectedItem = 'add'
+                    } else {
+                        this.selectedItem = results[results.length - 1]
+                    }
                 }
-
             }
-
 
         }
 
-        Event.emit('navigation_action', 'down')
+        Event.emit('navigation_action', 'up')
     },
 
     down() {
@@ -54,7 +61,11 @@ export default {
                 }
 
                 if (results.length === index + 1) {
-                    this.selectedItem = 'add'
+                    if (!ResultListVoter.canOpenAll()) {
+                        this.selectedItem = 'add'
+                    } else {
+                        this.selectedItem = results[0]
+                    }
                 }
             } else {
                 this.selectedItem = results[0]

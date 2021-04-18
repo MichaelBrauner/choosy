@@ -38,16 +38,13 @@ export default class ResultList {
                 return
             }
 
-            this.list.createListResults()
+            this.list.createResultList()
             this.createBox();
         })
 
         Event.on('input_focus', () => {
-            if (ResultListVoter.canOpen()) {
-                this.list.createListAllResults()
-                this.createBox();
-            }
-
+            this.list.createResultList()
+            this.createBox();
         })
 
     }

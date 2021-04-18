@@ -16,7 +16,6 @@ export class Widget {
     initialElement
     element
 
-    textInput
     tagList
     resultList
     navigation

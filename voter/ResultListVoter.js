@@ -3,8 +3,12 @@ import OptionVoter from "./OptionVoter";
 
 export default {
 
-    canOpen() {
+    canOpenAll() {
         return Store.inputIsEmpty && OptionVoter.canAdd()
+    },
+
+    canOpen() {
+        return !Store.inputIsEmpty && OptionVoter.canAdd()
     }
 
 }
