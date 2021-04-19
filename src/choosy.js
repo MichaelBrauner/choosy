@@ -4,6 +4,7 @@ import Store from "./store";
 import Config from "./components/Config";
 import TagList from "./components/TagList";
 import './style/choosy.css'
+import '@symfony/stimulus-bridge'
 
 export class Choosy {
 

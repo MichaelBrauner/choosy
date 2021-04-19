@@ -7,7 +7,9 @@
   "author": "Michael Brauner <michaelbrauner82@gmail.com>",
   "license": "MIT",
   "private": false,
-  "dependencies": {},
+  "dependencies": {
+    "rollup-plugin-multi-input": "^1.2.0"
+  },
   "devDependencies": {
     "autoprefixer": "^10.2.5",
     "cssnano": "^5.0.1",
