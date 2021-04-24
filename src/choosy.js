@@ -1,19 +1,32 @@
 import {Widget} from "./components/Widget";
 import Event from "./event";
-import Store from "./store";
-import Config from "./components/Config";
 import TagList from "./components/TagList";
 import './style/choosy.css'
-import '@symfony/stimulus-bridge'
+import Config from "./components/Config";
+import Store from "./store";
+import Navigation from "./components/Navigation";
+import ResultListVoter from "./voter/ResultListVoter";
+import OptionVoter from "./voter/OptionVoter";
+import InputVoter from "./voter/InputVoter";
 
-export class Choosy {
+const ChoosyObject = class Choosy {
 
     widget
     config
 
     constructor(element) {
-        this.widget = new Widget(element)
-        this.config = Config
+
+        this.store = new Store(this)
+        this.event = new Event()
+        this.widget = new Widget(element, this)
+        this.config = new Config()
+        this.navigation = new Navigation(this)
+
+        this.resultListVoter = new ResultListVoter(this)
+        this.optionVoter = new OptionVoter(this)
+        this.inputVoter = new InputVoter(this)
+
+        this.widget.element.__x = this
 
         this.initializeData()
         this.registerEventListener()
@@ -31,13 +44,13 @@ export class Choosy {
             if (this.widget.element.contains(event.target) || this.isClickOnTagList(event))
                 return
 
-            Event.emit('widget_clicked_outside')
+            this.event.emit('widget_clicked_outside')
         })
     }
 
     windowBlurEvent() {
         window.addEventListener('blur', () => {
-            Event.emit('window_blur')
+            this.event.emit('window_blur')
         })
     }
 
@@ -46,11 +59,17 @@ export class Choosy {
     }
 
     initializeData() {
-        Store.options.all = Array.from(Store.initialData)
+        this.store.options.options = Array.from(this.store.initialData)
     }
 
     resolveOptions() {
         if (!this.widget.initialElement.isMultiple)
-            Config.textInput.limit = 1
+            this.config.textInput.limit = 1
     }
 }
+
+const Choosy = (element) => {
+    return new ChoosyObject(element)
+}
+
+export default Choosy

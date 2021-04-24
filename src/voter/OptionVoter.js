@@ -1,7 +1,10 @@
-import Option from "../option";
+export default class OptionVoter {
 
-export default {
-    canAdd(){
-        return !Option.allTaken
+    constructor(app) {
+        this.app = app
+    }
+
+    canAdd() {
+        return !this.app.store.options.allTaken
     }
 }

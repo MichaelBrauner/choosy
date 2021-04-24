@@ -1,5 +1,4 @@
 import Component from "./Component";
-import Option from "../option";
 import TextInput from "./TextInput";
 import classnames from "../classnames";
 import elements from "../elements";
@@ -8,15 +7,20 @@ export default class TagList extends Component {
 
     textInput
 
-    constructor(element) {
-        super(element)
+    /**
+     *
+     * @param {Element=} element
+     * @param {Choosy} app
+     */
+    constructor(element, app) {
+        super(element, app)
 
         this.appendTextInput();
         this.registerEventListeners()
     }
 
     appendTextInput() {
-        this.textInput = new TextInput(elements.textInput)
+        this.textInput = new TextInput(elements.textInput, this.$app)
         this.element.append(this.textInput.element)
     }
 
@@ -26,8 +30,8 @@ export default class TagList extends Component {
             if (this.clickedOnRemoveButton(event.target)) {
                 event.preventDefault()
 
-                Option.unselect(
-                    Option.findByTextContent(this.findClickedTag(event).innerHTML)
+                this.$option.unselect(
+                    this.$option.findByTextContent(this.findClickedTag(event).innerHTML)
                 )
             }
         })
@@ -43,12 +47,18 @@ export default class TagList extends Component {
         return !!target.matches('path');
     }
 
-    static create() {
+    /**
+     *
+     * @param {Option} options
+     * @param {Choosy} app
+     * @returns {TagList}
+     */
+    static create(options, app) {
         const list = elements.list
 
-        Option.selected.forEach(item => list.append(elements.getItem(item.content)))
+        options.selected.forEach(item => list.append(elements.getItem(item.content)))
 
-        return new TagList(list)
+        return new TagList(list, app)
     }
 
     remove() {

@@ -1,54 +1,46 @@
 import elements from "./../elements";
 import InitialElement from "./InitialElement";
-import TextInput from "./TextInput";
 import classnames from "../classnames";
 import ResultList from "./ResultList";
-import Store from "../store";
-import Event from "../event";
-import Option from "../option";
 import TagList from "./TagList";
-import Navigation from "./Navigation";
-import OptionVoter from "../voter/OptionVoter";
-import InputVoter from "../voter/InputVoter"
+import Component from "./Component";
 
-export class Widget {
+export class Widget extends Component {
 
     initialElement
-    element
 
     tagList
     resultList
-    navigation
 
-    store = Store
+    /**
+     *
+     * @param {Element} element
+     * @param {Choosy} app
+     */
+    constructor(element, app) {
+        super(elements.widget, app);
 
-    constructor(initialElement) {
+        this.initialElement = new InitialElement(element, app)
 
-        this.initialElement = new InitialElement(initialElement)
-        this.element = elements.widget
-
-        // this.textInput = new TextInput(this.element.querySelector('.' + classnames.input))
-        this.resultList = new ResultList(this.element.querySelector('.' + classnames.result_list_container))
-        this.tagList = new TagList(this.element.querySelector('.' + classnames.list))
+        this.resultList = new ResultList(this.element.querySelector('.' + classnames.result_list_container), app)
+        this.tagList = new TagList(this.element.querySelector('.' + classnames.list), app)
 
         this.initialElement.attachWidget(this.element)
-        this.navigation = Navigation
-
         this.registerListeners()
     }
 
     registerListeners() {
 
         this.element.addEventListener('click', (event) => {
-            InputVoter.shouldFocusAfterEvent(event) && this.#focusInput()
+            this.$app.inputVoter.shouldFocusAfterEvent(event) && this.#focusInput()
         })
 
-        Event.on('option_chosen', () => {
+        this.$event.on('option_chosen', () => {
             this.update()
             this.#focusInput()
         })
 
-        Event.on('option_unselected', () => {
+        this.$event.on('option_unselected', () => {
             this.update()
             this.#focusInput()
         })
@@ -57,7 +49,6 @@ export class Widget {
 
     #focusInput() {
         this.tagList.textInput.focus()
-        // Event.emit('input_focus')
     }
 
     update() {
@@ -69,8 +60,8 @@ export class Widget {
     }
 
     appendNewSelectOptions() {
-        Store.options.all.forEach(option => {
-            if (Option.isNew(option)) {
+        this.$option.all.forEach(option => {
+            if (this.$option.isNew(option)) {
                 this.initialElement.appendOption(option)
             }
         })
@@ -78,7 +69,7 @@ export class Widget {
 
     updateTagList() {
         this.tagList.remove()
-        this.tagList = TagList.create()
+        this.tagList = TagList.create(this.$option, this.$app)
         this.element.append(this.tagList.element)
     }
 
@@ -87,7 +78,7 @@ export class Widget {
     }
 
     clearTextInput() {
-        TextInput.clear()
+        this.tagList.textInput.clear()
     }
 
     static get selector() {
@@ -95,10 +86,11 @@ export class Widget {
     }
 
     limit() {
-        if (!OptionVoter.canAdd()) {
+        if (!this.$app.optionVoter.canAdd()) {
             this.tagList.textInput.element.maxLength = 0
         } else {
             this.tagList.textInput.element.maxLength = 524288
         }
     }
+
 }

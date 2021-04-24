@@ -1,17 +1,23 @@
 import Option from "./option";
+import Component from "./components/Component";
 
-const Store = {
-    input: null,
-    initialData: [],
-    options: new Option(),
+export default class Store extends Component{
+
+    constructor(app) {
+        super(undefined, app);
+    }
+
+    input = null
+
+    initialData = []
+
+    options = new Option(this.$app)
 
     get inputIsEmpty() {
 
-        if(!this.input)
+        if (!this.input)
             return true
 
         return this.input?.length <= 0
     }
 }
-
-export default Store

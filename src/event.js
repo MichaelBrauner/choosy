@@ -1,12 +1,12 @@
-const Event = {
-    subscribers: {},
+export default class Event {
+    subscribers = {}
 
     on(eventName, callback) {
         if (!Array.isArray((this.subscribers)[eventName])) {
             (this.subscribers)[eventName] = []
         }
         (this.subscribers)[eventName].push(callback)
-    },
+    }
 
     off(eventName, callback) {
         if (callback) {
@@ -15,7 +15,7 @@ const Event = {
         }
 
         (this.subscribers)[eventName] = []
-    },
+    }
 
     emit(eventName, data) {
         if (!Array.isArray(this.subscribers[eventName])) {
@@ -24,8 +24,6 @@ const Event = {
         (this.subscribers)[eventName].forEach((callback) => {
             callback(data)
         })
-    },
+    }
 
 }
-
-export default Event

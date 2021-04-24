@@ -1,20 +1,23 @@
 import classnames from "../classnames";
 import elements from "../elements";
-import Option from "../option";
-import TextInput from "./TextInput";
-import Navigation from "./Navigation";
-import Event from "../event";
-import ResultListVoter from "../voter/ResultListVoter";
+import Component from "./Component";
 
-export default class ResultListList {
+/**
+ * @extends Component
+ */
+export default class ResultListList extends Component {
 
+    /**
+     *
+     * @param resultBox
+     * @param {Choosy} app
+     */
+    constructor(resultBox, app) {
+        super(undefined, app);
 
-    element
-
-    constructor(resultBox) {
         this.create(resultBox)
-
         this.registerEventListener()
+
     }
 
     create(resultBox) {
@@ -26,11 +29,12 @@ export default class ResultListList {
     destroy() {
         this.element.remove()
 
-        Event.off('navigation_action')
+        this.$event.off('navigation_action')
 
     }
 
     createListAndScroll() {
+        console.log('hey')
         this.createResultList()
         this.scrollToView()
     }
@@ -38,7 +42,7 @@ export default class ResultListList {
     registerEventListener() {
         this.chooseListener()
 
-        Event.on('navigation_action', () => {
+        this.$event.on('navigation_action', () => {
             this.createListAndScroll();
         })
 
@@ -64,14 +68,14 @@ export default class ResultListList {
     choose(value) {
 
         if (value) {
-            Option.choose(
-                Option.findByTextContent(value)
+            this.$option.choose(
+                this.$option.findByTextContent(value)
             )
             return
         }
 
-        if (!Option.equalToInput) {
-            Option.choose()
+        if (!this.$option.equalToInput) {
+            this.$option.choose()
         }
     }
 
@@ -80,10 +84,10 @@ export default class ResultListList {
         this.#clean()
 
         this.append(
-            ResultListList.results
+            this.results
         )
 
-        if (!Option.equalToInput && TextInput.hasMinLength) {
+        if (!this.$option.equalToInput && this.$textInput.hasMinLength) {
             this.appendAddItemToList()
         }
     }
@@ -93,15 +97,15 @@ export default class ResultListList {
         this.#clean()
 
         this.append(
-            Option.all
+            this.$option.all
         )
     }
 
     createResultList() {
-        if (ResultListVoter.canOpenAll())
+        if (this.$app.resultListVoter.canOpenAll())
             this.createListAllResults()
 
-        if (ResultListVoter.canOpen())
+        if (this.$app.resultListVoter.canOpen())
             this.createListResults()
     }
 
@@ -125,7 +129,7 @@ export default class ResultListList {
 
             const element = elements.addItem
 
-            if (Navigation.isAddItem())
+            if (this.$navigation.isAddItem())
                 element.classList.add(classnames.result_list_item_active)
 
             this.appendElementToList(element)
@@ -144,14 +148,14 @@ export default class ResultListList {
 
         const item = elements.resultItem
 
-        if (Navigation.isActive(option))
+        if (this.$navigation.isActive(option))
             item.classList.add(classnames.result_list_item_active)
 
         item.innerHTML = option.content
         return item
     }
 
-    static isEmpty(widget) {
+    isEmpty(widget) {
         return !widget.querySelectorAll(
             `${ResultListList.selector} > .${classnames.result_list_item}`
         ).length
@@ -173,14 +177,13 @@ export default class ResultListList {
         }
     }
 
-    static get results() {
+    get results() {
 
-        if (ResultListVoter.canOpenAll())
-            return Option.all ?? []
+        if (this.$app.resultListVoter.canOpenAll())
+            return this.$option.all ?? []
 
-        if (ResultListVoter.canOpen())
-            return TextInput.hasMinLength ? Option.startingWithInput : []
-
+        if (this.$app.resultListVoter.canOpen())
+            return this.$textInput.hasMinLength ? this.$option.startingWithInput : []
 
     }
 
@@ -214,7 +217,7 @@ export default class ResultListList {
     }
 
     getActiveElement() {
-        const option = Navigation.item
+        const option = this.$navigation.item
 
         if (!option)
             return null

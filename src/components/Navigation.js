@@ -1,16 +1,28 @@
-import ResultListList from "./ResultListList";
-import Event from "../event";
-import ResultListVoter from "../voter/ResultListVoter";
+import Component from "./Component";
+import NavigationEvents from "../events/navigationEvents";
 
-export default {
+/**
+ * @extends Component
+ */
+export default class Navigation extends Component{
 
-    item: '',
+    item = ''
+
+    /**
+     *
+     * @param {Choosy} app
+     */
+    constructor(app) {
+        super(undefined, app);
+
+        this.events = new NavigationEvents(app)
+    }
 
     up() {
-        const results = ResultListList.results
+        const results = this.$app.widget.resultList.list.results
 
         if (!this.selectedItem) {
-            if (!ResultListVoter.canOpenAll()) {
+            if (!this.$app.resultListVoter.canOpenAll()) {
                 this.selectedItem = 'add'
             } else {
                 this.selectedItem = results[results.length - 1]
@@ -27,7 +39,7 @@ export default {
                 }
 
                 if (!results[index - 1]) {
-                    if (!ResultListVoter.canOpenAll()) {
+                    if (!this.$app.resultListVoter.canOpenAll()) {
                         this.selectedItem = 'add'
                     } else {
                         this.selectedItem = results[results.length - 1]
@@ -37,11 +49,11 @@ export default {
 
         }
 
-        Event.emit('navigation_action', 'up')
-    },
+        this.$event.emit('navigation_action', 'up')
+    }
 
     down() {
-        const results = ResultListList.results
+        const results = this.$app.widget.resultList.list.results
 
         if (!this.selectedItem) {
 
@@ -61,7 +73,7 @@ export default {
                 }
 
                 if (results.length === index + 1) {
-                    if (!ResultListVoter.canOpenAll()) {
+                    if (!this.$app.resultListVoter.canOpenAll()) {
                         this.selectedItem = 'add'
                     } else {
                         this.selectedItem = results[0]
@@ -74,24 +86,24 @@ export default {
         }
 
 
-        Event.emit('navigation_action', 'down')
-    },
+        this.$event.emit('navigation_action', 'down')
+    }
 
     clear() {
         this.selectedItem = ''
-    },
+    }
 
     isActive(option) {
         return option === this.selectedItem
-    },
+    }
 
     isAddItem() {
         return 'add' === this.selectedItem
-    },
+    }
 
     get selectedItem() {
         return this.item
-    },
+    }
 
     set selectedItem(item) {
         this.item = item

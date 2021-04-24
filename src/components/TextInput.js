@@ -1,16 +1,16 @@
 import Component from "./Component";
 import {debounce, getLastOfArray} from "../util";
-import Event from "../event";
-import Store from "../store";
-import Option from "../option";
-import navigationEvents from "../events/navigationEvents";
-import OptionVoter from "../voter/OptionVoter";
 import classnames from "../classnames";
 
 export default class TextInput extends Component {
 
-    constructor(element) {
-        super(element)
+    /**
+     *
+     * @param {Element=} element
+     * @param {Choosy} app
+     */
+    constructor(element, app) {
+        super(element, app)
 
         this.registerListeners()
     }
@@ -36,47 +36,47 @@ export default class TextInput extends Component {
             }
 
             if (event.key === 'Tab') {
-                Event.emit('input_pressed_tab')
+                this.$event.emit('input_pressed_tab')
             }
 
-            navigationEvents.handle(event)
+            this.$navigation.events.handle(event)
         })
 
         this.element.addEventListener('input',
             debounce(event => {
-                Event.emit('input_input_debounced', event)
+                this.$event.emit('input_input_debounced', event)
             }, 250)
         )
 
         this.element.addEventListener('focus', () => {
-            Event.emit('input_focus')
+            this.$event.emit('input_focus')
         })
 
         this.element.addEventListener('blur', (event) => {
-            Event.emit('input_blur', event)
+            this.$event.emit('input_blur', event)
         })
 
-        Event.on('input_cleared', this.resetValue)
+        this.$event.on('input_cleared', this.resetValue)
     }
 
-    static get length() {
-        return Store.input?.length
+    get length() {
+        return this.$store.input?.length
     }
 
-    static get hasMinLength() {
-        return TextInput.length >= 2
+    get hasMinLength() {
+        return this.length >= 2
     }
 
     adjustWidth() {
-        this.element.style.width = `${TextInput.length ? TextInput.length + 1 : 1}ch`
+        this.element.style.width = `${this.length ? this.length + 1 : 1}ch`
     }
 
     refreshState() {
-        Store.input = this.element.value
+        this.$store.input = this.element.value
     }
 
     limit(event) {
-        if (!OptionVoter.canAdd())
+        if (!this.$app.optionVoter.canAdd())
             event.preventDefault()
     }
 
@@ -84,28 +84,28 @@ export default class TextInput extends Component {
         return '.' + classnames.input
     }
 
-    static clear() {
-        Store.input = null
-        Event.emit('input_cleared')
+    clear() {
+        this.$store.input = null
+        this.$event.emit('input_cleared')
     }
 
     enterKeyEvent(event) {
         event.preventDefault()
 
-        if (TextInput.hasMinLength || OptionVoter.canAdd())
-            Option.choose()
+        if (this.hasMinLength || this.$app.optionVoter.canAdd())
+            this.$option.choose()
     }
 
     escapeKeyEvent() {
-        Event.emit('input_pressed_esc')
+        this.$event.emit('input_pressed_esc')
     }
 
     backspaceKeyEvent(event) {
-        if (!Store.inputIsEmpty || Option.isListEmpty)
+        if (!this.$store.inputIsEmpty || this.$option.isListEmpty)
             return
 
         event.preventDefault()
-        Option.unselect(getLastOfArray(Option.selected))
+        this.$option.unselect(getLastOfArray(this.$option.selected))
     }
 
     get isFocussed() {
@@ -122,6 +122,6 @@ export default class TextInput extends Component {
     }
 
     destroy() {
-        Event.off('input_cleared', this.resetValue)
+        this.$event.off('input_cleared', this.resetValue)
     }
 }

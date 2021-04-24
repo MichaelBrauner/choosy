@@ -1,8 +1,11 @@
-export default {
-    textInput: {
+export default class Config {
+
+    textInput = {
         limit: null
-    },
-    resultList: {
+    }
+
+    resultList = {
         openOnFocus: true
     }
+
 }

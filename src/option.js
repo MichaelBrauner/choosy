@@ -1,37 +1,38 @@
-import Store from "./store";
-import Event from "./event";
 import {compareOptions} from "./util";
-import Navigation from "./components/Navigation";
-import Config from "./components/Config";
+import Component from "./components/Component";
 
-export default class Option {
+export default class Option extends Component {
 
-    all
+    options
 
-    static get all() {
-        return Store.options.all.filter(option => !!option.content)
+    constructor(app) {
+        super(undefined, app);
     }
 
-    static get startingWithInput() {
-        return Option.all.filter(option => option.content.includes(Store.input) && !option.selected)
+    get all() {
+        return this.options.filter(option => !!option.content)
     }
 
-    static get equalToInput() {
-        return Option.all.find(option => option.content === Store.input)
+    get startingWithInput() {
+        return this.options.filter(option => option.content.includes(this.$store.input) && !option.selected)
     }
 
-    static get selected() {
-        return Option.all
+    get equalToInput() {
+        return this.options.find(option => option.content === this.$store.input)
+    }
+
+    get selected() {
+        return this.options
             .filter(option => option.selected)
             .sort((a, b) => a.selected - b.selected)
     }
 
-    static findByTextContent(value) {
-        return Option.all.find(option => option.content === value)
+    findByTextContent(value) {
+        return this.options.find(option => option.content === value)
     }
 
-    static findByOptionElement(optionElement) {
-        return Option.all.find(option => {
+    findByOptionElement(optionElement) {
+        return this.options.find(option => {
 
             if (optionElement.value === null)
                 return option.content === optionElement.innerHTML
@@ -41,43 +42,43 @@ export default class Option {
     }
 
 
-    static choose(option) {
+    choose(option) {
 
         if (option) {
-            Option.select(option)
+            this.select(option)
         } else {
-            if (Navigation.item) {
-                Option.selectNavigationItem()
+            if (this.$navigation.item) {
+                this.selectNavigationItem()
             } else {
-                Option.selectInputValue()
+                this.selectInputValue()
             }
         }
 
-        Event.emit('option_chosen')
+        this.$event.emit('option_chosen')
     }
 
-    static append(option) {
+    append(option) {
 
         if (option) {
             return
         }
 
-        const storeIndex = Store.options.all.push(Option.getModel()) - 1
+        const storeIndex = this.options.push(this.getModel()) - 1
 
-        return Store.options.all[storeIndex]
+        return this.options[storeIndex]
     }
 
-    static getModel(option) {
+    getModel(option) {
         return {
             value: option ? option.value : null,
-            content: option ? option.innerHTML : Store.input,
-            selected: Option.decide(option),
-            timestamp: (option && Option.decide(option)) ? Date.now() : null
+            content: option ? option.innerHTML : this.$store.input,
+            selected: this.decide(option),
+            timestamp: (option && this.decide(option)) ? Date.now() : null
         }
     }
 
-    static select(option) {
-        Store.options.all.map(item => {
+    select(option) {
+        this.options.map(item => {
             if (item.content !== option.content)
                 return
 
@@ -86,20 +87,20 @@ export default class Option {
         })
     }
 
-    static unselect(option) {
+    unselect(option) {
 
-        Store.options.all.map(item => {
+        this.options.map(item => {
             if (item.content !== option.content)
                 return
 
             item.selected = false
         })
 
-        Event.emit('option_unselected')
+        this.$event.emit('option_unselected')
         this.#clean()
     }
 
-    static decide(option) {
+    decide(option) {
         let selected = false
 
         if (option) {
@@ -113,35 +114,35 @@ export default class Option {
         return selected
     }
 
-    static isNew(option) {
-        return !Store.initialData.find(item => compareOptions(item, option))
+    isNew(option) {
+        return !this.$store.initialData.find(item => compareOptions(item, option))
     }
 
-    static #clean() {
-        Store.options.all = Store.options.all.filter(item => {
-            return !Option.isNew(item)
+    #clean() {
+        this.options = this.options.filter(item => {
+            return !this.isNew(item)
         })
     }
 
-    static get isListEmpty() {
-        return !Option.selected.length
+    get isListEmpty() {
+        return !this.selected.length
     }
 
-    static selectNavigationItem() {
-        if (Navigation.item === 'add') {
-            Option.selectInputValue()
+    selectNavigationItem() {
+        if (this.$navigation.item === 'add') {
+            this.selectInputValue()
         } else {
-            Option.select(Navigation.item)
+            this.select(this.$navigation.item)
         }
     }
 
-    static selectInputValue() {
-        Option.select(
-            Option.append()
+    selectInputValue() {
+        this.select(
+            this.append()
         )
     }
 
-    static get allTaken(){
-        return !(Config.textInput.limit > Option.selected?.length)
+    get allTaken() {
+        return !(this.$app.config.textInput.limit > this.selected?.length)
     }
 }

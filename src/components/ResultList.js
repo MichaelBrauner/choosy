@@ -1,13 +1,13 @@
-import Event from "../event"
-import Store from "../store";
 import ResultListList from "./ResultListList";
 import classnames from "../classnames";
-import Navigation from "./Navigation";
-import ResultListVoter from "../voter/ResultListVoter";
+import Component from "./Component";
 
-export default class ResultList {
 
-    element
+/**
+ * @extends Component
+ */
+export default class ResultList extends Component{
+
     list
 
     closeEvents = [
@@ -17,8 +17,14 @@ export default class ResultList {
         'window_blur'
     ]
 
-    constructor(element) {
-        this.element = element
+    /**
+     *
+     * @param element
+     * @param {Choosy} app
+     */
+    constructor(element, app) {
+        super(element, app);
+
         this.appendList()
         this.registerEventListener()
     }
@@ -26,14 +32,14 @@ export default class ResultList {
     registerEventListener() {
 
         this.closeEvents.forEach(eventName => {
-            Event.on(eventName, () => {
+            this.$event.on(eventName, () => {
                 this.closeResultBox()
             })
         })
 
-        Event.on('input_input_debounced', () => {
+        this.$event.on('input_input_debounced', () => {
 
-            if (Store.inputIsEmpty) {
+            if (this.$store.inputIsEmpty) {
                 this.closeResultBox()
                 return
             }
@@ -42,7 +48,7 @@ export default class ResultList {
             this.createBox();
         })
 
-        Event.on('input_focus', () => {
+        this.$event.on('input_focus', () => {
             this.list.createResultList()
             this.createBox();
         })
@@ -69,7 +75,8 @@ export default class ResultList {
 
         if (this.open)
             this.element.style.display = 'none'
-        Navigation.clear()
+
+        this.$navigation.clear()
     }
 
     #clean() {
@@ -78,10 +85,10 @@ export default class ResultList {
     }
 
     appendList() {
-        this.list = new ResultListList(this.element)
+        this.list = new ResultListList(this.element, this.$app)
     }
 
-    static isOpen(widget) {
+    isOpen(widget) {
         return widget.querySelector(ResultList.selector).style.display === 'block'
     }
 

@@ -1,7 +1,11 @@
 import classnames from "../classnames";
 import TagList from "../components/TagList";
 
-export default {
+export default class InputVoter {
+
+    constructor(app) {
+        this.app = app
+    }
 
     shouldFocusAfterEvent(event) {
 

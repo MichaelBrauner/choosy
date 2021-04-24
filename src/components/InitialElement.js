@@ -1,18 +1,20 @@
 import Component from "./Component";
-import Store from "../store";
-import Option from "../option";
 import elements from "../elements";
-import Event from "../event";
 
-export default class InitialElement extends Component {
+export default class InitialElement extends Component{
 
-    constructor(element) {
-        super(element)
+    /**
+     *
+     * @param {Element} element
+     * @param {Choosy} app
+     */
+    constructor(element, app) {
+        super(element, app)
 
-        this.storeInitialData()
+        this.storeInitialData(app)
         this.hide()
 
-        this.registerListeners()
+        this.registerListeners(app)
     }
 
     hide() {
@@ -24,9 +26,9 @@ export default class InitialElement extends Component {
     }
 
     storeInitialData() {
-        Store.initialData = Array.from(this.getAllOptions)
+        this.$app.store.initialData = Array.from(this.getAllOptions)
             .map((option) => {
-                return Option.getModel(option)
+                return this.$store.options.getModel(option)
             })
     }
 
@@ -44,11 +46,11 @@ export default class InitialElement extends Component {
     }
 
     registerListeners() {
-        Event.on('option_chosen', () => {
+        this.$app.event.on('option_chosen', () => {
             this.update()
         })
 
-        Event.on('option_unselected', () => {
+        this.$app.event.on('option_unselected', () => {
             this.update()
         })
     }
@@ -56,7 +58,7 @@ export default class InitialElement extends Component {
     update() {
         this.element.querySelectorAll('option').forEach(option => {
 
-            if (Option.findByOptionElement(option)?.selected) {
+            if (this.$store.options.findByOptionElement(option)?.selected) {
                 option.selected = 'selected'
                 return
             }
@@ -68,4 +70,5 @@ export default class InitialElement extends Component {
     get isMultiple() {
         return this.element.multiple
     }
+
 }

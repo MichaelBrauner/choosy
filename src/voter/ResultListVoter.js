@@ -1,14 +1,14 @@
-import Store from "../store";
-import OptionVoter from "./OptionVoter";
+export default class ResultListVoter {
 
-export default {
-
-    canOpenAll() {
-        return Store.inputIsEmpty && OptionVoter.canAdd()
-    },
-
-    canOpen() {
-        return !Store.inputIsEmpty && OptionVoter.canAdd()
+    constructor(app) {
+        this.$app = app
     }
 
+    canOpenAll() {
+        return this.$app.store.inputIsEmpty && this.$app.optionVoter.canAdd()
+    }
+
+    canOpen() {
+        return !this.$app.store.inputIsEmpty && this.$app.optionVoter.canAdd()
+    }
 }
