@@ -37,6 +37,10 @@ export default class Option extends Component {
             if (optionElement.value === null)
                 return option.content === optionElement.innerHTML
 
+            if (optionElement.value === '__new_option__') {
+                return option.value === null && option.content === optionElement.innerHTML
+            }
+
             return option.value === optionElement.value && option.content === optionElement.innerHTML
         })
     }
@@ -54,7 +58,7 @@ export default class Option extends Component {
             }
         }
 
-        this.$event.emit('option_chosen')
+        this.$event.emit('option_chosen', option)
     }
 
     append(option) {

@@ -59,7 +59,7 @@ export default class InitialElement extends Component{
         this.element.querySelectorAll('option').forEach(option => {
 
             if (this.$store.options.findByOptionElement(option)?.selected) {
-                option.selected = 'selected'
+                option.selected = true
                 return
             }
 

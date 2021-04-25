@@ -65,6 +65,7 @@ export class Widget extends Component {
                 this.initialElement.appendOption(option)
             }
         })
+        this.initialElement.update()
     }
 
     updateTagList() {
