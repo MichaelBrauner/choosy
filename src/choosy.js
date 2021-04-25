@@ -9,7 +9,7 @@ import ResultListVoter from "./voter/ResultListVoter";
 import OptionVoter from "./voter/OptionVoter";
 import InputVoter from "./voter/InputVoter";
 
-const ChoosyObject = class Choosy {
+export default class Choosy {
 
     widget
     config
@@ -67,9 +67,3 @@ const ChoosyObject = class Choosy {
             this.config.textInput.limit = 1
     }
 }
-
-const Choosy = (element) => {
-    return new ChoosyObject(element)
-}
-
-export default Choosy
