@@ -14,6 +14,7 @@ export default {
         const widget = this.create('div', null, [classnames.widget])
         widget.append(this.list)
         // widget.append(this.textInput)
+
         widget.append(this.resultList)
         return widget
     },

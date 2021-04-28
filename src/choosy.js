@@ -31,6 +31,7 @@ export default class Choosy {
         this.initializeData()
         this.registerEventListener()
         this.resolveOptions()
+        this.widget.update(false)
     }
 
     registerEventListener() {

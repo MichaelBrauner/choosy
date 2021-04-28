@@ -51,8 +51,9 @@ export class Widget extends Component {
         this.tagList.textInput.focus()
     }
 
-    update() {
+    update(triggerChangeEvent) {
         this.appendNewSelectOptions()
+        this.initialElement.update(triggerChangeEvent)
         this.updateTagList()
         this.closeResultListBox()
         this.clearTextInput()
@@ -65,7 +66,6 @@ export class Widget extends Component {
                 this.initialElement.appendOption(option)
             }
         })
-        this.initialElement.update()
     }
 
     updateTagList() {

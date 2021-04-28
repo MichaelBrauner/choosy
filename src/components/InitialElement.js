@@ -38,7 +38,7 @@ export default class InitialElement extends Component{
 
     appendOption(option) {
         const newOption = elements.selectOption
-        newOption.value = '__new_option__'
+        newOption.value = '__new_option__' + option.content
         newOption.innerHTML = option.content
 
         this.element.append(newOption)
@@ -55,7 +55,10 @@ export default class InitialElement extends Component{
         })
     }
 
-    update() {
+    update(triggerChangeEvent) {
+
+        console.log(triggerChangeEvent)
+
         this.element.querySelectorAll('option').forEach(option => {
 
             if (this.$store.options.findByOptionElement(option)?.selected) {
@@ -65,6 +68,14 @@ export default class InitialElement extends Component{
 
             option.selected = false
         })
+
+        if (triggerChangeEvent ?? true) {
+            this.triggerChangeEvent()
+        }
+    }
+
+    triggerChangeEvent() {
+        this.element.dispatchEvent(new Event('change'))
     }
 
     get isMultiple() {
