@@ -34,7 +34,6 @@ export default class ResultListList extends Component {
     }
 
     createListAndScroll() {
-        console.log('hey')
         this.createResultList()
         this.scrollToView()
     }

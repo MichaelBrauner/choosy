@@ -36,12 +36,12 @@ export class Widget extends Component {
         })
 
         this.$event.on('option_chosen', () => {
-            this.update()
+            this.update(false)
             this.#focusInput()
         })
 
         this.$event.on('option_unselected', () => {
-            this.update()
+            this.update(false)
             this.#focusInput()
         })
 

@@ -46,6 +46,7 @@ export default class InitialElement extends Component{
     }
 
     registerListeners() {
+
         this.$app.event.on('option_chosen', () => {
             this.update()
         })
@@ -56,8 +57,6 @@ export default class InitialElement extends Component{
     }
 
     update(triggerChangeEvent) {
-
-        console.log(triggerChangeEvent)
 
         this.element.querySelectorAll('option').forEach(option => {
 
