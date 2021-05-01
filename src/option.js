@@ -122,7 +122,6 @@ export default class Option extends Component {
     }
 
     isNew(option) {
-        // console.log('is_new', option)
         return !this.$store.initialData.find(item => compareOptions(item, option))
     }
 
