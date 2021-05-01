@@ -1,7 +1,7 @@
 import Component from "./Component";
 import elements from "../elements";
 
-export default class InitialElement extends Component{
+export default class InitialElement extends Component {
 
     /**
      *
@@ -11,10 +11,10 @@ export default class InitialElement extends Component{
     constructor(element, app) {
         super(element, app)
 
-        this.storeInitialData(app)
+        this.storeInitialData()
         this.hide()
 
-        this.registerListeners(app)
+        this.registerListeners()
     }
 
     hide() {
@@ -27,9 +27,7 @@ export default class InitialElement extends Component{
 
     storeInitialData() {
         this.$app.store.initialData = Array.from(this.getAllOptions)
-            .map((option) => {
-                return this.$store.options.getModel(option)
-            })
+            .map(option => this.$store.options.getModel(option))
     }
 
     get getAllOptions() {
@@ -71,6 +69,7 @@ export default class InitialElement extends Component{
         if (triggerChangeEvent ?? true) {
             this.triggerChangeEvent()
         }
+
     }
 
     triggerChangeEvent() {
@@ -79,6 +78,32 @@ export default class InitialElement extends Component{
 
     get isMultiple() {
         return this.element.multiple
+    }
+
+    updateOptionsData() {
+        this.storeInitialData()
+        this.$option.options = Array.from(this.getAllOptions)
+            .map(option => this.$store.options.getModel(option))
+
+        this.$widget.update(false)
+    }
+
+    clean() {
+        this.getAllOptions.forEach(element => {
+            if(this.isOptionNew(element) && !this.isSelected(element)) {
+                element.remove()
+            }
+        })
+    }
+
+    isOptionNew(element) {
+        return element.value.startsWith('__new_option__')
+    }
+
+    isSelected(element) {
+        return !!this.$option.selected.find(option => {
+            return element.textContent === option.content
+        })
     }
 
 }

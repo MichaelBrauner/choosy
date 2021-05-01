@@ -66,6 +66,7 @@ export default class ResultListList extends Component {
 
     choose(value) {
 
+        console.log(value)
         if (value) {
             this.$option.choose(
                 this.$option.findByTextContent(value)

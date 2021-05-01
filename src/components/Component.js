@@ -59,4 +59,12 @@ export default class Component {
     get $textInput() {
         return this.$app.widget.tagList.textInput
     }
+
+    /**
+     *
+     * @returns {Widget}
+     */
+    get $widget() {
+        return this.$app.widget
+    }
 }

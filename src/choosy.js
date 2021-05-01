@@ -26,7 +26,7 @@ export default class Choosy {
         this.optionVoter = new OptionVoter(this)
         this.inputVoter = new InputVoter(this)
 
-        this.widget.element.__x = this
+        this.widget.initialElement.element.__x = this
 
         this.initializeData()
         this.registerEventListener()

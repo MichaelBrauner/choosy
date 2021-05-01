@@ -62,7 +62,6 @@ export default class Option extends Component {
     }
 
     append(option) {
-
         if (option) {
             return
         }
@@ -100,6 +99,10 @@ export default class Option extends Component {
             item.selected = false
         })
 
+        if (option.value === null) {
+            this.removeAllUnselectedNew()
+        }
+
         this.$event.emit('option_unselected')
         this.#clean()
     }
@@ -119,6 +122,7 @@ export default class Option extends Component {
     }
 
     isNew(option) {
+        // console.log('is_new', option)
         return !this.$store.initialData.find(item => compareOptions(item, option))
     }
 
@@ -148,5 +152,9 @@ export default class Option extends Component {
 
     get allTaken() {
         return !(this.$app.config.textInput.limit > this.selected?.length)
+    }
+
+    removeAllUnselectedNew() {
+        this.options = this.options.filter(item => item.value)
     }
 }

@@ -61,11 +61,14 @@ export class Widget extends Component {
     }
 
     appendNewSelectOptions() {
+
         this.$option.all.forEach(option => {
             if (this.$option.isNew(option)) {
                 this.initialElement.appendOption(option)
             }
         })
+
+        this.initialElement.clean()
     }
 
     updateTagList() {
