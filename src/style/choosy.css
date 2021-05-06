@@ -7,9 +7,19 @@
     border-color: #e5e7eb;
     border-width: 1px;
     border-radius: 0;
+
+    &.disabled {
+        background-color: #f3f4f6;
+        cursor: not-allowed;
+
+        input {
+            cursor: not-allowed;
+        }
+    }
 }
 
 .choosy-input {
+    background-color: transparent;
     display: inline-block;
     vertical-align: baseline;
     border: 0;

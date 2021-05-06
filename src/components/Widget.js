@@ -18,7 +18,7 @@ export class Widget extends Component {
      * @param {Choosy} app
      */
     constructor(element, app) {
-        super(elements.widget, app);
+        super(app, elements.widget);
 
         this.initialElement = new InitialElement(element, app)
 
@@ -32,7 +32,7 @@ export class Widget extends Component {
     registerListeners() {
 
         this.element.addEventListener('click', (event) => {
-            this.$app.inputVoter.shouldFocusAfterEvent(event) && this.#focusInput()
+            this.$app.inputVoter.shouldFocusOnWidgetClick(event) && this.#focusInput()
         })
 
         this.$event.on('option_chosen', () => {
@@ -58,6 +58,7 @@ export class Widget extends Component {
         this.closeResultListBox()
         this.clearTextInput()
         this.limit()
+        this.updateConfigOptions()
     }
 
     appendNewSelectOptions() {
@@ -95,6 +96,20 @@ export class Widget extends Component {
         } else {
             this.tagList.textInput.element.maxLength = 524288
         }
+    }
+
+    updateConfigOptions() {
+        this.$config.resolveEnabled()
+    }
+
+    disable() {
+        this.element.classList.add('disabled')
+        this.tagList.textInput.element.tabIndex = -1
+    }
+
+    enable() {
+        this.element.classList.remove('disabled')
+        this.tagList.textInput.element.tabIndex = 0
     }
 
 }

@@ -7,7 +7,7 @@ import Component from "../components/Component";
 export default class NavigationEvents extends Component{
 
     constructor(app) {
-        super(undefined, app);
+        super(app);
     }
 
     handle(event) {

@@ -13,7 +13,7 @@ export default class TagList extends Component {
      * @param {Choosy} app
      */
     constructor(element, app) {
-        super(element, app)
+        super(app, element)
 
         this.appendTextInput();
         this.registerEventListeners()

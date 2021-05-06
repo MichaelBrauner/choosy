@@ -10,7 +10,7 @@ export default class TextInput extends Component {
      * @param {Choosy} app
      */
     constructor(element, app) {
-        super(element, app)
+        super(app, element)
 
         this.registerListeners()
     }

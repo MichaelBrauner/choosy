@@ -2,21 +2,21 @@ export default class Component {
 
     /**
      *
-     * @param {Element=} element
      * @param {Choosy} app
+     * @param {Element=} element
      */
-    constructor(element, app) {
-
-        /**
-         * @type {Element}
-         */
-        this.element = element
+    constructor(app, element) {
 
         /**
          *
          * @type {Choosy}
          */
         this.$app = app
+
+        /**
+         * @type {Element}
+         */
+        this.element = element
 
     }
 
@@ -66,5 +66,13 @@ export default class Component {
      */
     get $widget() {
         return this.$app.widget
+    }
+
+    /**
+     *
+     * @returns {Config}
+     */
+    get $config() {
+        return this.$app.config
     }
 }

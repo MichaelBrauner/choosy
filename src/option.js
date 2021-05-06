@@ -6,7 +6,7 @@ export default class Option extends Component {
     options
 
     constructor(app) {
-        super(undefined, app);
+        super(app);
     }
 
     get all() {
@@ -150,7 +150,7 @@ export default class Option extends Component {
     }
 
     get allTaken() {
-        return !(this.$app.config.textInput.limit > this.selected?.length)
+        return !(this.$app.config.options.limit > this.selected?.length)
     }
 
     removeAllUnselectedNew() {

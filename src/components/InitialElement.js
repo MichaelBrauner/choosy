@@ -9,7 +9,7 @@ export default class InitialElement extends Component {
      * @param {Choosy} app
      */
     constructor(element, app) {
-        super(element, app)
+        super(app, element)
 
         this.storeInitialData()
         this.hide()

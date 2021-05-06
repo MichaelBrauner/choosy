@@ -23,7 +23,7 @@ export default class ResultList extends Component{
      * @param {Choosy} app
      */
     constructor(element, app) {
-        super(element, app);
+        super(app, element);
 
         this.appendList()
         this.registerEventListener()

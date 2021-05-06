@@ -14,12 +14,12 @@ export default class Choosy {
     widget
     config
 
-    constructor(element) {
+    constructor(element, config) {
 
         this.store = new Store(this)
         this.event = new Event()
         this.widget = new Widget(element, this)
-        this.config = new Config()
+        this.config = new Config(this, config)
         this.navigation = new Navigation(this)
 
         this.resultListVoter = new ResultListVoter(this)
@@ -65,6 +65,16 @@ export default class Choosy {
 
     resolveOptions() {
         if (!this.widget.initialElement.isMultiple)
-            this.config.textInput.limit = 1
+            this.config.options.limit = 1
+    }
+
+    disable() {
+        this.config.options.enabled = false
+        this.widget.disable()
+    }
+
+    enable() {
+        this.config.options.enabled = true
+        this.widget.enable()
     }
 }

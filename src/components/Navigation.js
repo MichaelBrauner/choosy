@@ -13,7 +13,7 @@ export default class Navigation extends Component{
      * @param {Choosy} app
      */
     constructor(app) {
-        super(undefined, app);
+        super(app);
 
         this.events = new NavigationEvents(app)
     }
