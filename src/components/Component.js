@@ -1,9 +1,13 @@
+/**
+ * @class Component
+ */
 export default class Component {
 
     /**
      *
      * @param {Choosy} app
-     * @param {Element=} element
+     * @param {Element|undefined} element
+     * @constructor
      */
     constructor(app, element) {
 

@@ -6,11 +6,13 @@ export default class Option extends Component {
     options
 
     constructor(app) {
-        super(app);
+        super(app, undefined);
     }
 
     get all() {
-        return this.options.filter(option => !!option.content)
+        return this.options.filter(option => {
+            return !!option.content && !this.isSelected(option)
+        })
     }
 
     get startingWithInput() {
@@ -25,6 +27,16 @@ export default class Option extends Component {
         return this.options
             .filter(option => option.selected)
             .sort((a, b) => a.selected - b.selected)
+    }
+
+    /**
+     *
+     * @param {Object} option
+     * @returns {boolean}
+     */
+    isSelected(option) {
+        const item = this.findByTextContent(option.content)
+        return item && item.selected
     }
 
     findByTextContent(value) {
@@ -86,13 +98,14 @@ export default class Option extends Component {
                 return
 
             item.selected = true
-            item.timestamp = Date.now
+            item.timestamp = Date.now()
         })
     }
 
     unselect(option) {
 
         this.options.map(item => {
+
             if (item.content !== option.content)
                 return
 
@@ -102,7 +115,6 @@ export default class Option extends Component {
         if (option.value === null) {
             this.removeAllUnselectedNew()
         }
-
         this.$event.emit('option_unselected')
         this.#clean()
     }
@@ -127,7 +139,7 @@ export default class Option extends Component {
 
     #clean() {
         this.options = this.options.filter(item => {
-            return !this.isNew(item)
+            return !this.isNew(item) || item.selected
         })
     }
 
@@ -149,11 +161,18 @@ export default class Option extends Component {
         )
     }
 
+    /**
+     * @returns {boolean}
+     */
     get allTaken() {
+
+        if (!this.$config.options.limit) return false
+
         return !(this.$app.config.options.limit > this.selected?.length)
     }
 
     removeAllUnselectedNew() {
-        this.options = this.options.filter(item => item.value)
+        this.options = this.options.filter(item => item.value || item.selected)
     }
+
 }

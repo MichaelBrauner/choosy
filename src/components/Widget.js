@@ -112,4 +112,10 @@ export class Widget extends Component {
         this.tagList.textInput.element.tabIndex = 0
     }
 
+    destroy() {
+        this.tagList.remove()
+        this.resultList.destroy()
+        this.element.remove()
+    }
+
 }

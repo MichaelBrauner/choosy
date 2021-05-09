@@ -1,10 +1,12 @@
-export default class OptionVoter {
+import Component from "../components/Component";
+
+export default class OptionVoter extends Component{
 
     constructor(app) {
-        this.app = app
+        super(app, undefined);
     }
 
     canAdd() {
-        return !this.app.store.options.allTaken
+        return !this.$app.store.options.allTaken
     }
 }

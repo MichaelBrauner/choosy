@@ -1,18 +1,28 @@
 import Component from "./Component";
 import {merge} from "../util";
 
+/**
+ * @class
+ * @extends Component
+ */
 export default class Config extends Component {
 
+    /**
+     * @param {Choosy} app
+     * @param options
+     */
     constructor(app, options) {
-        super(app);
+        super(app, undefined);
 
         if (options) {
             this.options = merge(this.options, options)
         }
-
-        // console.log(this.options)
     }
 
+    /**
+     * @type {{openOnFocus: boolean, limit: null|number, enabled: boolean}}
+     * @default
+     */
     options = {
         enabled: true,
         limit: null,

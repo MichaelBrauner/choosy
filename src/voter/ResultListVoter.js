@@ -1,14 +1,16 @@
-export default class ResultListVoter {
+import Component from "../components/Component";
+
+export default class ResultListVoter extends Component{
 
     constructor(app) {
-        this.$app = app
+        super(app, undefined)
     }
 
     canOpenAll() {
-        return this.$app.store.inputIsEmpty && this.$app.optionVoter.canAdd()
+        return this.$store.inputIsEmpty && this.$app.optionVoter.canAdd()
     }
 
     canOpen() {
-        return !this.$app.store.inputIsEmpty && this.$app.optionVoter.canAdd()
+        return !this.$store.inputIsEmpty && this.$app.optionVoter.canAdd()
     }
 }

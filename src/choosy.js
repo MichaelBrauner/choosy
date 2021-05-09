@@ -35,24 +35,24 @@ export default class Choosy {
     }
 
     registerEventListener() {
-        this.clickedOutsideOfWidgetEvent()
-        this.windowBlurEvent()
+        document.addEventListener('click', this.clickedOutsideOfWidgetEvent)
+        window.addEventListener('blur', this.windowBlurEvent)
     }
 
-    clickedOutsideOfWidgetEvent() {
-        document.addEventListener('click', event => {
-
-            if (this.widget.element.contains(event.target) || this.isClickOnTagList(event))
-                return
-
-            this.event.emit('widget_clicked_outside')
-        })
+    removeEventListeners() {
+        document.removeEventListener('click', this.clickedOutsideOfWidgetEvent)
+        window.removeEventListener('blur', this.windowBlurEvent)
     }
 
-    windowBlurEvent() {
-        window.addEventListener('blur', () => {
-            this.event.emit('window_blur')
-        })
+    clickedOutsideOfWidgetEvent = (event) => {
+        if (this.widget.element.contains(event.target) || this.isClickOnTagList(event))
+            return
+
+        this.event.emit('widget_clicked_outside')
+    }
+
+    windowBlurEvent = () => {
+        this.event.emit('window_blur')
     }
 
     isClickOnTagList(event) {
@@ -76,5 +76,19 @@ export default class Choosy {
     enable() {
         this.config.options.enabled = true
         this.widget.enable()
+    }
+
+    clear() {
+        this.widget.destroy()
+        this.removeEventListeners()
+        this.store = undefined
+        this.event = undefined
+        this.config = undefined
+        this.navigation = undefined
+        this.resultListVoter = undefined
+        this.optionVoter = undefined
+        this.inputVoter = undefined
+
+        this.widget.initialElement.element.__x = undefined
     }
 }

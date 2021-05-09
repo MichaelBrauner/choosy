@@ -80,7 +80,7 @@ export default class ResultList extends Component{
     }
 
     #clean() {
-        this.list.destroy()
+        this.destroy()
         this.appendList()
     }
 
@@ -94,5 +94,9 @@ export default class ResultList extends Component{
 
     static get selector() {
         return `.${classnames.result_list_container}`
+    }
+
+    destroy() {
+        this.list.destroy()
     }
 }
