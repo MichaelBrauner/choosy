@@ -62,9 +62,8 @@ export class Widget extends Component {
     }
 
     appendNewSelectOptions() {
-        console.log(this.$option.all)
         this.$option.all.forEach(option => {
-            if (this.$option.isNew(option)) {
+            if (this.$option.isNew(option) && !this.initialElement.isOptionCreated(option)) {
                 this.initialElement.appendOption(option)
             }
         })

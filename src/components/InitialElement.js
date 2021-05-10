@@ -70,8 +70,6 @@ export default class InitialElement extends Component {
             this.triggerChangeEvent()
         }
 
-        console.log(this.element.selectedOptions)
-
     }
 
     triggerChangeEvent() {
@@ -106,6 +104,27 @@ export default class InitialElement extends Component {
         return !!this.$option.selected.find(option => {
             return element.textContent === option.content
         })
+    }
+
+    /**
+     *
+     * @param {Object} option
+     */
+    isOptionCreated(option) {
+        return this.getAllOptions.find((select) => {
+            return option.content === this.extractNewOptionsValue(select)
+        })
+    }
+
+    /**
+     * @param {HTMLOptionElement} selectOption
+     * @return {String}
+     */
+    extractNewOptionsValue(selectOption) {
+        if (this.isOptionNew(selectOption)){
+            const value = selectOption.value
+            return value.replace('__new_option__', '')
+        }
     }
 
 }
