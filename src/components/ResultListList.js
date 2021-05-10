@@ -96,7 +96,7 @@ export default class ResultListList extends Component {
         this.#clean()
 
         this.append(
-            this.$option.all
+            this.$option.allButSelected
         )
     }
 

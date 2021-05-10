@@ -11,6 +11,12 @@ export default class Option extends Component {
 
     get all() {
         return this.options.filter(option => {
+            return !!option.content
+        })
+    }
+
+    get allButSelected() {
+        return this.options.filter(option => {
             return !!option.content && !this.isSelected(option)
         })
     }

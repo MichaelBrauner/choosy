@@ -70,6 +70,8 @@ export default class InitialElement extends Component {
             this.triggerChangeEvent()
         }
 
+        console.log(this.element.selectedOptions)
+
     }
 
     triggerChangeEvent() {
