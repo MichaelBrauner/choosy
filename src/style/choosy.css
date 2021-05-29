@@ -28,7 +28,7 @@
     outline: none;
     box-shadow: none !important;
     height: 1.5rem;
-    padding: 0;
+    padding: 0 !important;
 }
 
 .choosy-list {
