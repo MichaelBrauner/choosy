@@ -1,14 +1,15 @@
-export default class Event {
-    subscribers = {}
+export default class AppEvent {
 
-    on(eventName, callback) {
+    private subscribers: Object = {};
+
+    on(eventName: string, callback: Function): void {
         if (!Array.isArray((this.subscribers)[eventName])) {
             (this.subscribers)[eventName] = []
         }
         (this.subscribers)[eventName].push(callback)
     }
 
-    off(eventName, callback) {
+    off(eventName: string, callback: Function|undefined = undefined): void {
         if (callback) {
             (this.subscribers)[eventName] = this.subscribers[eventName].filter(event => event !== callback)
             return
@@ -17,11 +18,11 @@ export default class Event {
         (this.subscribers)[eventName] = []
     }
 
-    emit(eventName, data) {
+    emit(eventName: string, data: any = undefined): void {
         if (!Array.isArray(this.subscribers[eventName])) {
             return
         }
-        (this.subscribers)[eventName].forEach((callback) => {
+        (this.subscribers)[eventName].forEach((callback: Function) => {
             callback(data)
         })
     }

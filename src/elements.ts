@@ -3,7 +3,6 @@ import classnames from "./classnames";
 export default {
 
     get textInput() {
-
         const input = this.create('input', 'text', [classnames.input])
         input.style.width = '1ch'
 
@@ -13,7 +12,6 @@ export default {
     get widget() {
         const widget = this.create('div', null, [classnames.widget])
         widget.append(this.list)
-        // widget.append(this.textInput)
 
         widget.append(this.resultList)
         return widget
@@ -44,8 +42,6 @@ export default {
         const wrapper = this.create('div', null, [classnames.result_list_container])
         wrapper.style.display = 'none'
 
-        // wrapper.append(this.resultListList)
-
         return wrapper
     },
 
@@ -53,7 +49,7 @@ export default {
         return this.create('ul', null, [classnames.result_list])
     },
 
-    get resultItem() {
+    get resultItem(): HTMLLIElement {
         return this.create('li', null, [classnames.result_list_item])
     },
 
@@ -65,7 +61,7 @@ export default {
         return item
     },
 
-    get selectOption() {
+    get selectOption(): HTMLOptionElement {
         return this.create('option', null)
     },
 

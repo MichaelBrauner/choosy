@@ -2,29 +2,26 @@ import Component from "./Component";
 import TextInput from "./TextInput";
 import classnames from "../classnames";
 import elements from "../elements";
+import Choosy from "../choosy";
+import Option from "../option";
 
 export default class TagList extends Component {
 
-    textInput
+    textInput: TextInput;
 
-    /**
-     *
-     * @param {Element=} element
-     * @param {Choosy} app
-     */
-    constructor(element, app) {
+    constructor(app: Choosy, element: HTMLDivElement) {
         super(app, element)
 
         this.appendTextInput();
         this.registerEventListeners()
     }
 
-    appendTextInput() {
-        this.textInput = new TextInput(elements.textInput, this.$app)
+    appendTextInput(): void {
+        this.textInput = new TextInput(this.$app, elements.textInput)
         this.element.append(this.textInput.element)
     }
 
-    registerEventListeners() {
+    registerEventListeners(): void {
         this.element.addEventListener('click', event => {
 
             if (this.clickedOnRemoveButton(event.target)) {
@@ -37,7 +34,7 @@ export default class TagList extends Component {
         })
     }
 
-    clickedOnRemoveButton(target) {
+    clickedOnRemoveButton(target): Boolean {
         if (target.matches('button.' + classnames.remove_button))
             return true
 
@@ -47,31 +44,24 @@ export default class TagList extends Component {
         return !!target.matches('path');
     }
 
-    /**
-     *
-     * @param {Option} options
-     * @param {Choosy} app
-     * @returns {TagList}
-     */
-    static create(options, app) {
+    static create(options: Option, app: Choosy): TagList {
         const list = elements.list
-
         options.selected.forEach(item => list.append(elements.getItem(item.content)))
 
-        return new TagList(list, app)
+        return new TagList(app, list)
     }
 
-    remove() {
+    remove(): void {
         this.textInput.destroy()
         this.element.remove()
     }
 
-    findClickedTag(event) {
+    findClickedTag(event): HTMLElement {
         return event.target.closest('.' + classnames.item)
             .querySelector('.' + classnames.item_text_span)
     }
 
-    static get selector() {
+    static get selector(): string {
         return '.' + classnames.list
     }
 

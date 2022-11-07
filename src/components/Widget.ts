@@ -4,32 +4,26 @@ import classnames from "../classnames";
 import ResultList from "./ResultList";
 import TagList from "./TagList";
 import Component from "./Component";
+import Choosy from "../choosy";
 
-export class Widget extends Component {
+export default class Widget extends Component {
 
-    initialElement
+    resultList: ResultList;
+    tagList: TagList;
+    initialElement: InitialElement;
+    element: HTMLSelectElement;
 
-    tagList
-    resultList
-
-    /**
-     *
-     * @param {Element} element
-     * @param {Choosy} app
-     */
-    constructor(element, app) {
+    constructor(element: HTMLSelectElement, app: Choosy) {
         super(app, elements.widget);
 
-        this.initialElement = new InitialElement(element, app)
-
+        this.initialElement = new InitialElement(app, element)
         this.resultList = new ResultList(this.element.querySelector('.' + classnames.result_list_container), app)
-        this.tagList = new TagList(this.element.querySelector('.' + classnames.list), app)
-
+        this.tagList = new TagList(app, this.element.querySelector('.' + classnames.list))
         this.initialElement.attachWidget(this.element)
         this.registerListeners()
     }
 
-    registerListeners() {
+    registerListeners(): void {
 
         this.element.addEventListener('click', (event) => {
             this.$app.inputVoter.shouldFocusOnWidgetClick(event) && this.#focusInput()
@@ -44,14 +38,13 @@ export class Widget extends Component {
             this.update(false)
             this.#focusInput()
         })
-
     }
 
-    #focusInput() {
+    #focusInput(): void {
         this.tagList.textInput.focus()
     }
 
-    update(triggerChangeEvent) {
+    update(triggerChangeEvent): void {
         this.appendNewSelectOptions()
         this.initialElement.update(triggerChangeEvent)
         this.updateTagList()
@@ -61,7 +54,7 @@ export class Widget extends Component {
         this.updateConfigOptions()
     }
 
-    appendNewSelectOptions() {
+    appendNewSelectOptions(): void {
         this.$option.all.forEach(option => {
             if (this.$option.isNew(option) && !this.initialElement.isOptionCreated(option)) {
                 this.initialElement.appendOption(option)
@@ -71,25 +64,25 @@ export class Widget extends Component {
         this.initialElement.clean()
     }
 
-    updateTagList() {
+    updateTagList(): void {
         this.tagList.remove()
         this.tagList = TagList.create(this.$option, this.$app)
         this.element.append(this.tagList.element)
     }
 
-    closeResultListBox() {
+    closeResultListBox(): void {
         this.resultList.closeResultBox()
     }
 
-    clearTextInput() {
+    clearTextInput(): void {
         this.tagList.textInput.clear()
     }
 
-    static get selector() {
+    static get selector(): string {
         return `.${classnames.widget}`
     }
 
-    limit() {
+    limit(): void {
         if (!this.$app.optionVoter.canAdd()) {
             this.tagList.textInput.element.maxLength = 0
         } else {
@@ -97,21 +90,21 @@ export class Widget extends Component {
         }
     }
 
-    updateConfigOptions() {
+    updateConfigOptions(): void {
         this.$config.resolveEnabled()
     }
 
-    disable() {
+    disable(): void {
         this.element.classList.add('disabled')
         this.tagList.textInput.element.tabIndex = -1
     }
 
-    enable() {
+    enable(): void {
         this.element.classList.remove('disabled')
         this.tagList.textInput.element.tabIndex = 0
     }
 
-    destroy() {
+    destroy(): void {
         this.tagList.remove()
         this.resultList.destroy()
         this.element.remove()

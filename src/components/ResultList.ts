@@ -85,7 +85,7 @@ export default class ResultList extends Component{
     }
 
     appendList() {
-        this.list = new ResultListList(this.element, this.$app)
+        this.list = new ResultListList(this.$app, this.element)
     }
 
     isOpen(widget) {

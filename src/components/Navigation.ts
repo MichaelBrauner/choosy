@@ -1,36 +1,35 @@
 import Component from "./Component";
 import NavigationEvents from "../events/navigationEvents";
+import OptionModel from "../model/OptionModel";
+import Choosy from "../choosy";
 
-/**
- * @extends Component
- */
-export default class Navigation extends Component{
+export default class Navigation extends Component {
 
-    item = ''
+    item: OptionModel = new OptionModel()
+    events: NavigationEvents;
 
-    /**
-     *
-     * @param {Choosy} app
-     */
-    constructor(app) {
+    constructor(app: Choosy) {
         super(app);
-
         this.events = new NavigationEvents(app)
     }
 
     up() {
+
         const results = this.$app.widget.resultList.list.results
 
-        if (!this.selectedItem) {
+        if (this.selectedItem.isBlanc()) {
+
             if (!this.$app.resultListVoter.canOpenAll()) {
-                this.selectedItem = 'add'
+                this.switchToAdd();
             } else {
                 this.selectedItem = results[results.length - 1]
             }
+
         } else {
+
             const index = results.indexOf(this.selectedItem)
 
-            if (this.selectedItem === 'add') {
+            if (this.selectedItem.isAddition()) {
                 this.selectedItem = results[results.length - 1]
             } else {
 
@@ -39,11 +38,13 @@ export default class Navigation extends Component{
                 }
 
                 if (!results[index - 1]) {
+
                     if (!this.$app.resultListVoter.canOpenAll()) {
-                        this.selectedItem = 'add'
+                        this.switchToAdd()
                     } else {
                         this.selectedItem = results[results.length - 1]
                     }
+
                 }
             }
 
@@ -58,14 +59,14 @@ export default class Navigation extends Component{
         if (!this.selectedItem) {
 
             if (!results.length) {
-                this.selectedItem = 'add'
+                this.selectedItem = OptionModel.Addition
             } else {
                 this.selectedItem = results[0]
             }
 
         } else {
 
-            if (this.selectedItem !== 'add') {
+            if (this.selectedItem.isAddition()) {
                 const index = results.indexOf(this.selectedItem)
 
                 if (results.length > index + 1) {
@@ -74,7 +75,7 @@ export default class Navigation extends Component{
 
                 if (results.length === index + 1) {
                     if (!this.$app.resultListVoter.canOpenAll()) {
-                        this.selectedItem = 'add'
+                        this.selectedItem = OptionModel.Addition
                     } else {
                         this.selectedItem = results[0]
                     }
@@ -89,24 +90,23 @@ export default class Navigation extends Component{
         this.$event.emit('navigation_action', 'down')
     }
 
-    clear() {
-        this.selectedItem = ''
+    clear(): void {
+        this.selectedItem = new OptionModel()
     }
 
-    isActive(option) {
+    isActive(option: OptionModel): boolean {
         return option === this.selectedItem
     }
 
-    isAddItem() {
-        return 'add' === this.selectedItem
-    }
-
-    get selectedItem() {
+    get selectedItem(): OptionModel {
         return this.item
     }
 
-    set selectedItem(item) {
+    set selectedItem(item: OptionModel) {
         this.item = item
     }
 
+    private switchToAdd(): void {
+        this.selectedItem = OptionModel.Addition
+    }
 }

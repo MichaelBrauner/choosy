@@ -1,17 +1,14 @@
 import Component from "./Component";
 import {merge} from "../util";
+import Choosy from "../choosy";
 
-/**
- * @class
- * @extends Component
- */
 export default class Config extends Component {
 
     /**
      * @param {Choosy} app
      * @param options
      */
-    constructor(app, options) {
+    constructor(app: Choosy, options) {
         super(app, undefined);
 
         if (options) {

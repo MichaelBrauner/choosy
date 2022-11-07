@@ -1,44 +1,36 @@
 import classnames from "../classnames";
 import elements from "../elements";
 import Component from "./Component";
+import Choosy from "../choosy";
+import OptionModel from "../model/OptionModel";
 
-/**
- * @extends Component
- */
 export default class ResultListList extends Component {
 
-    /**
-     *
-     * @param resultBox
-     * @param {Choosy} app
-     */
-    constructor(resultBox, app) {
-        super(app, undefined);
+    constructor(app: Choosy, resultBox: HTMLElement,) {
+        super(app);
 
         this.create(resultBox)
         this.registerEventListener()
 
     }
 
-    create(resultBox) {
+    create(resultBox: HTMLElement): void {
         const list = elements.resultListList
         resultBox.append(list)
         this.element = list
     }
 
-    destroy() {
+    destroy(): void {
         this.element.remove()
-
         this.$event.off('navigation_action')
-
     }
 
-    createListAndScroll() {
+    createListAndScroll(): void {
         this.createResultList()
         this.scrollToView()
     }
 
-    registerEventListener() {
+    registerEventListener(): void {
         this.chooseListener()
 
         this.$event.on('navigation_action', () => {
@@ -47,60 +39,48 @@ export default class ResultListList extends Component {
 
     }
 
-    chooseListener() {
+    chooseListener(): void {
 
         this.element.addEventListener('click', event => {
 
-            if (event.target.matches(`li.${classnames.result_list_item}:not(.${classnames.add_item})`)) {
-                this.choose(event.target.innerHTML)
+            const target = event.target as HTMLElement;
+
+            if (target.matches(`li.${classnames.result_list_item}:not(.${classnames.add_item})`)) {
+                this.choose(target.innerHTML)
                 return
             }
 
-            if (event.target.matches('li.' + classnames.add_item)) {
+            if (target.matches('li.' + classnames.add_item)) {
                 this.choose();
             }
-
         })
-
     }
 
-    choose(value) {
+    choose(value: string | undefined = undefined): void {
 
         if (value) {
-            this.$option.choose(
-                this.$option.findByTextContent(value)
-            )
+            this.$option.choose(this.$option.findByTextContent(value))
             return
         }
 
-        if (!this.$option.equalToInput) {
-            this.$option.choose()
-        }
+        !this.$option.equalToInput && this.$option.choose()
     }
 
-    createListResults() {
+    createListResults(): void {
 
         this.#clean()
+        this.append(this.results)
 
-        this.append(
-            this.results
-        )
-
-        if (!this.$option.equalToInput && this.$textInput.hasMinLength) {
+        if (!this.$option.equalToInput && this.$textInput.hasMinLength)
             this.appendAddItemToList()
-        }
     }
 
-    createListAllResults() {
-
+    createListAllResults(): void {
         this.#clean()
-
-        this.append(
-            this.$option.allButSelected
-        )
+        this.append(this.$option.allButSelected)
     }
 
-    createResultList() {
+    createResultList(): void {
         if (this.$app.resultListVoter.canOpenAll())
             this.createListAllResults()
 
@@ -108,9 +88,9 @@ export default class ResultListList extends Component {
             this.createListResults()
     }
 
-    append(options) {
-        options.forEach(option => {
+    append(options: OptionModel[]): void {
 
+        options.forEach(option => {
             if (this.hasOption(option))
                 return
 
@@ -118,32 +98,33 @@ export default class ResultListList extends Component {
         })
     }
 
-    hasOption(option) {
+    hasOption(option: OptionModel): HTMLLIElement {
         return Array.from(this.allListItems)
-            .find(result => result.textContent === option.textContent)
+            .find(result => result.textContent === option.content)
     }
 
-    appendAddItemToList() {
+    appendAddItemToList(): void {
+
         if (!this.hasAddNewItem) {
 
             const element = elements.addItem
 
-            if (this.$navigation.isAddItem())
+            if (this.$navigation.selectedItem.isAddition())
                 element.classList.add(classnames.result_list_item_active)
 
             this.appendElementToList(element)
         }
     }
 
-    appendElementToList(element) {
+    appendElementToList(element): void {
         this.element.append(element)
     }
 
-    get hasAddNewItem() {
+    get hasAddNewItem(): HTMLOptionElement {
         return this.element.querySelector('.' + classnames.add_item)
     }
 
-    createResultItem(option) {
+    createResultItem(option): HTMLLIElement {
 
         const item = elements.resultItem
 
@@ -154,21 +135,21 @@ export default class ResultListList extends Component {
         return item
     }
 
-    isEmpty(widget) {
+    isEmpty(widget): boolean {
         return !widget.querySelectorAll(
             `${ResultListList.selector} > .${classnames.result_list_item}`
         ).length
     }
 
-    static get selector() {
+    static get selector(): string {
         return `.${classnames.result_list}`
     }
 
-    get allListItems() {
+    get allListItems(): HTMLCollectionOf<HTMLLIElement> {
         return this.element.getElementsByTagName('li')
     }
 
-    #clean() {
+    #clean(): void {
         const nodes = this.allListItems
 
         for (let i = 0, len = nodes.length; i !== len; ++i) {
@@ -176,7 +157,7 @@ export default class ResultListList extends Component {
         }
     }
 
-    get results() {
+    get results(): any[] {
 
         if (this.$app.resultListVoter.canOpenAll())
             return this.$option.all ?? []
@@ -184,9 +165,10 @@ export default class ResultListList extends Component {
         if (this.$app.resultListVoter.canOpen())
             return this.$textInput.hasMinLength ? this.$option.startingWithInput : []
 
+        return [];
     }
 
-    setResultBoxHeight() {
+    setResultBoxHeight(): void {
 
         const items = this.allListItems
 
@@ -202,20 +184,18 @@ export default class ResultListList extends Component {
         this.element.style.height = result ? result + 'px' : 'auto'
     }
 
-    scrollToView() {
-
+    scrollToView(): void {
         const activeElement = this.getActiveElement()
-        if (activeElement) {
+
+        if (activeElement)
             activeElement.scrollIntoView({
                 block: 'nearest',
                 inline: 'nearest',
-                behavior: 'smooth',
-                boundary: this.element
+                behavior: 'smooth'
             });
-        }
     }
 
-    getActiveElement() {
+    getActiveElement(): null|HTMLLIElement {
         const option = this.$navigation.item
 
         if (!option)
@@ -225,9 +205,11 @@ export default class ResultListList extends Component {
 
     }
 
-    #findOptionElementByDataOption(option) {
-        if (option === 'add')
+    #findOptionElementByDataOption(option): null|HTMLLIElement {
+
+        if (option.isAddition())
             return this.element.querySelector(`.${classnames.add_item}`)
+
         return Array.from(this.allListItems).find(optionElement => {
             return optionElement?.innerHTML === option?.content
         })

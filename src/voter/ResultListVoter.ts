@@ -2,15 +2,11 @@ import Component from "../components/Component";
 
 export default class ResultListVoter extends Component{
 
-    constructor(app) {
-        super(app, undefined)
-    }
-
-    canOpenAll() {
+    canOpenAll(): Boolean {
         return this.$store.inputIsEmpty && this.$app.optionVoter.canAdd()
     }
 
-    canOpen() {
+    canOpen(): Boolean {
         return !this.$store.inputIsEmpty && this.$app.optionVoter.canAdd()
     }
 }

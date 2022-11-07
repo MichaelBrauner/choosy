@@ -1,33 +1,38 @@
-import {Widget} from "./components/Widget";
-import Event from "./event";
-import TagList from "./components/TagList";
-import './style/choosy.css'
-import Config from "./components/Config";
 import Store from "./store";
+import Config from "./components/Config";
 import Navigation from "./components/Navigation";
+import Widget from "./components/Widget";
+import TagList from "./components/TagList";
 import ResultListVoter from "./voter/ResultListVoter";
 import OptionVoter from "./voter/OptionVoter";
 import InputVoter from "./voter/InputVoter";
+import AppEvent from "./event";
+import './style/choosy.css'
 
 export default class Choosy {
 
-    widget
-    config
+    config: Config
+    store: Store;
+    navigation: Navigation;
+    resultListVoter: ResultListVoter;
+    event: AppEvent;
+    optionVoter: OptionVoter;
+    inputVoter: InputVoter;
+    widget: Widget;
 
-    constructor(element, config) {
+    constructor(element?: HTMLSelectElement, config?: Config) {
+        if (!element)
+            return
 
         this.store = new Store(this)
-        this.event = new Event()
-        this.widget = new Widget(element, this)
         this.config = new Config(this, config)
         this.navigation = new Navigation(this)
-
+        this.event = new AppEvent()
+        this.widget = new Widget(element, this)
         this.resultListVoter = new ResultListVoter(this)
         this.optionVoter = new OptionVoter(this)
         this.inputVoter = new InputVoter(this)
-
         this.widget.initialElement.element.__x = this
-
         this.initializeData()
         this.registerEventListener()
         this.resolveOptions()
@@ -55,30 +60,30 @@ export default class Choosy {
         this.event.emit('window_blur')
     }
 
-    isClickOnTagList(event) {
-        return !!event.target.closest(TagList.selector);
+    isClickOnTagList(event: Event) {
+        return !!(event.target as HTMLElement).closest(TagList.selector);
     }
 
-    initializeData() {
+    initializeData(): void {
         this.store.options.options = Array.from(this.store.initialData)
     }
 
-    resolveOptions() {
+    resolveOptions(): void {
         if (!this.widget.initialElement.isMultiple)
             this.config.options.limit = 1
     }
 
-    disable() {
+    disable(): void {
         this.config.options.enabled = false
         this.widget.disable()
     }
 
-    enable() {
+    enable(): void {
         this.config.options.enabled = true
         this.widget.enable()
     }
 
-    clear() {
+    clear(): void {
         this.widget.destroy()
         this.removeEventListeners()
         this.store = undefined

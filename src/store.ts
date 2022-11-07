@@ -8,9 +8,7 @@ export default class Store extends Component{
     }
 
     input = null
-
     initialData = []
-
     options = new Option(this.$app)
 
     get inputIsEmpty() {

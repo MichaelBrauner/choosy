@@ -4,13 +4,14 @@ import postcss from 'rollup-plugin-postcss';
 import nested from 'postcss-nested';
 import cssnano from 'cssnano';
 import multiInput from 'rollup-plugin-multi-input';
+import typescript from '@rollup/plugin-typescript';
 
 const path = require('path');
 
 export default {
     input: [
-        {'choosy.min': 'src/choosy.js'},
-        {'global.choosy.min': 'src/globalChoosy.js'}
+        {'choosy.min': 'src/choosy.ts'},
+        {'global.choosy.min': 'src/globalChoosy.ts'}
     ],
     onwarn(warning, rollupWarn) {
         if (warning.code !== 'CIRCULAR_DEPENDENCY') {
@@ -24,7 +25,9 @@ export default {
         sourcemap: 'inline',
     },
     plugins: [
+        typescript(),
         uglify(),
+        multiInput(),
 
         babel({
             exclude: 'node_modules/**',
@@ -40,6 +43,5 @@ export default {
             extract: path.resolve('dist/choosy.min.css')
         }),
 
-        multiInput(),
     ],
 };

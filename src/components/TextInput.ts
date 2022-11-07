@@ -1,21 +1,19 @@
 import Component from "./Component";
 import {debounce, getLastOfArray} from "../util";
 import classnames from "../classnames";
+import Choosy from "../choosy";
 
 export default class TextInput extends Component {
 
-    /**
-     *
-     * @param {Element=} element
-     * @param {Choosy} app
-     */
-    constructor(element, app) {
+    public element: HTMLInputElement;
+
+    constructor(app: Choosy, element: HTMLInputElement) {
         super(app, element)
 
         this.registerListeners()
     }
 
-    registerListeners() {
+    registerListeners(): void {
 
         this.element.addEventListener('input', () => {
             this.refreshState()
@@ -23,12 +21,13 @@ export default class TextInput extends Component {
         })
 
         this.element.addEventListener('keydown', event => {
+
             if (event.key === 'Enter') {
                 this.enterKeyEvent(event)
             }
 
             if (event.key === 'Escape') {
-                this.escapeKeyEvent(event)
+                this.escapeKeyEvent()
             }
 
             if (event.key === 'Backspace') {
@@ -59,48 +58,48 @@ export default class TextInput extends Component {
         this.$event.on('input_cleared', this.resetValue)
     }
 
-    get length() {
+    get length(): number | undefined {
         return this.$store.input?.length
     }
 
-    get hasMinLength() {
+    get hasMinLength(): boolean {
         return this.length >= 2
     }
 
-    adjustWidth() {
+    adjustWidth(): void {
         this.element.style.width = `${this.length ? this.length + 1 : 1}ch`
     }
 
-    refreshState() {
+    refreshState(): void {
         this.$store.input = this.element.value
     }
 
-    limit(event) {
+    limit(event: Event): void {
         if (!this.$app.optionVoter.canAdd())
             event.preventDefault()
     }
 
-    static get selector() {
+    static get selector(): string {
         return '.' + classnames.input
     }
 
-    clear() {
+    clear(): void {
         this.$store.input = null
         this.$event.emit('input_cleared')
     }
 
-    enterKeyEvent(event) {
+    enterKeyEvent(event: Event): void {
         event.preventDefault()
 
         if (this.hasMinLength || this.$app.optionVoter.canAdd())
             this.$option.choose()
     }
 
-    escapeKeyEvent() {
+    escapeKeyEvent(): void {
         this.$event.emit('input_pressed_esc')
     }
 
-    backspaceKeyEvent(event) {
+    backspaceKeyEvent(event: Event): void {
         if (!this.$store.inputIsEmpty || this.$option.isListEmpty)
             return
 
@@ -108,20 +107,20 @@ export default class TextInput extends Component {
         this.$option.unselect(getLastOfArray(this.$option.selected))
     }
 
-    get isFocussed() {
+    get isFocussed(): boolean {
         return document.activeElement.classList.contains(classnames.input)
     }
 
-    focus() {
+    focus(): void {
         if (!this.isFocussed)
             this.element.focus()
     }
 
-    resetValue = () => {
+    resetValue(): void {
         this.element.value = null
     }
 
-    destroy() {
+    destroy(): void {
         this.$event.off('input_cleared', this.resetValue)
     }
 }

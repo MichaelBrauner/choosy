@@ -1,14 +1,13 @@
 import Component from "./Component";
 import elements from "../elements";
+import Choosy from "../choosy";
+import OptionModel from "../model/OptionModel";
+import ChoosyHTMLSelectElement from "../element/ChoosyHTMLSelectElement";
 
 export default class InitialElement extends Component {
+    public element: ChoosyHTMLSelectElement;
 
-    /**
-     *
-     * @param {Element} element
-     * @param {Choosy} app
-     */
-    constructor(element, app) {
+    constructor(app: Choosy, element: HTMLSelectElement) {
         super(app, element)
 
         this.storeInitialData()
@@ -17,44 +16,44 @@ export default class InitialElement extends Component {
         this.registerListeners()
     }
 
-    hide() {
+    hide(): void {
         this.element.style.display = 'none'
     }
 
-    attachWidget(widget) {
+    attachWidget(widget: HTMLSelectElement): void {
         this.element.parentElement.append(widget)
     }
 
-    storeInitialData() {
+    storeInitialData(): void {
         this.$app.store.initialData = Array.from(this.getAllOptions)
             .map(option => this.$store.options.getModel(option))
     }
 
-    get getAllOptions() {
+    get getAllOptions(): HTMLOptionElement[] {
         return Array.from(this.element.querySelectorAll('option'))
     }
 
-    appendOption(option) {
-        const newOption = elements.selectOption
-        newOption.value = '__new_option__' + option.content
-        newOption.innerHTML = option.content
+    appendOption(option: OptionModel): HTMLOptionElement {
+        const newOptionEl = elements.selectOption
+        newOptionEl.value = '__new_option__' + option.content
+        newOptionEl.innerHTML = option.content
 
-        this.element.append(newOption)
-        return newOption
+        this.element.append(newOptionEl)
+        return newOptionEl
     }
 
-    registerListeners() {
+    registerListeners(): void {
 
-        this.$app.event.on('option_chosen', () => {
+        this.$event.on('option_chosen', () => {
             this.update()
         })
 
-        this.$app.event.on('option_unselected', () => {
+        this.$event.on('option_unselected', () => {
             this.update()
         })
     }
 
-    update(triggerChangeEvent) {
+    update(triggerChangeEvent: boolean = true): void {
 
         this.element.querySelectorAll('option').forEach(option => {
 
@@ -66,21 +65,21 @@ export default class InitialElement extends Component {
             option.selected = false
         })
 
-        if (triggerChangeEvent ?? true) {
+        if (triggerChangeEvent) {
             this.triggerChangeEvent()
         }
 
     }
 
-    triggerChangeEvent() {
+    triggerChangeEvent(): void {
         this.element.dispatchEvent(new Event('change'))
     }
 
-    get isMultiple() {
+    get isMultiple(): boolean {
         return this.element.multiple
     }
 
-    updateOptionsData() {
+    updateOptionsData(): void {
         this.storeInitialData()
         this.$option.options = Array.from(this.getAllOptions)
             .map(option => this.$store.options.getModel(option))
@@ -88,43 +87,37 @@ export default class InitialElement extends Component {
         this.$widget.update(false)
     }
 
-    clean() {
+    clean(): void {
         this.getAllOptions.forEach(element => {
-            if(this.isOptionNew(element) && !this.isSelected(element)) {
+            if (this.isOptionNew(element) && !this.isSelected(element)) {
                 element.remove()
             }
         })
     }
 
-    isOptionNew(element) {
+    isOptionNew(element): boolean {
         return element.value.startsWith('__new_option__')
     }
 
-    isSelected(element) {
+    isSelected(element): boolean {
         return !!this.$option.selected.find(option => {
             return element.textContent === option.content
         })
     }
 
-    /**
-     *
-     * @param {Object} option
-     */
-    isOptionCreated(option) {
+    isOptionCreated(option): HTMLOptionElement {
         return this.getAllOptions.find((select) => {
             return option.content === this.extractNewOptionsValue(select)
         })
     }
 
-    /**
-     * @param {HTMLOptionElement} selectOption
-     * @return {String}
-     */
-    extractNewOptionsValue(selectOption) {
-        if (this.isOptionNew(selectOption)){
+    extractNewOptionsValue(selectOption: HTMLOptionElement): string|undefined {
+        if (this.isOptionNew(selectOption)) {
             const value = selectOption.value
             return value.replace('__new_option__', '')
         }
+
+        return undefined;
     }
 
 }

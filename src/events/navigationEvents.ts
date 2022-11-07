@@ -1,16 +1,9 @@
-import {Widget} from "../components/Widget";
+import Widget from "../components/Widget";
 import Component from "../components/Component";
 
-/**
- * @extends Component
- */
-export default class NavigationEvents extends Component{
+export default class NavigationEvents extends Component {
 
-    constructor(app) {
-        super(app);
-    }
-
-    handle(event) {
+    handle(event): void {
         if (event.key === 'ArrowDown') {
             event.preventDefault()
             this.arrowDownEvent(event)
@@ -22,21 +15,21 @@ export default class NavigationEvents extends Component{
         }
     }
 
-    arrowDownEvent(event) {
+    arrowDownEvent(event): void {
         if (this.isNavigationEnabled(event)) this.$navigation.down()
     }
 
-    arrowUpEvent(event) {
+    arrowUpEvent(event): void {
         if (this.isNavigationEnabled(event)) this.$navigation.up()
     }
 
-    isNavigationEnabled(event) {
+    isNavigationEnabled(event): boolean {
         const widget = this.getWidgetFromEvent(event)
         return this.$app.widget.resultList.isOpen(widget) && !this.$app.widget.resultList.list.isEmpty(widget)
     }
 
-    getWidgetFromEvent(event) {
-        return event.target.closest(Widget.selector)
+    getWidgetFromEvent(event: Event): HTMLSelectElement {
+        return (event.target as Element).closest(Widget.selector)
     }
 }
 
