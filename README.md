@@ -23,9 +23,7 @@ yarn add @michael-brauner/choosy
 ```
 
 ```javascript
+import Choosy from "@michael-brauner/choosy";
 
-import {Choosy} from "@michael-brauner/choosy";
-
-const element = document.getElementById("cars");
-const choosy = new Choosy(element);
+new Choosy(document.getElementById("cars"));
 ```

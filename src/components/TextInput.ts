@@ -5,11 +5,10 @@ import Choosy from "../choosy";
 
 export default class TextInput extends Component {
 
-    public element: HTMLInputElement;
+    element: HTMLInputElement;
 
     constructor(app: Choosy, element: HTMLInputElement) {
         super(app, element)
-
         this.registerListeners()
     }
 
@@ -117,7 +116,8 @@ export default class TextInput extends Component {
     }
 
     resetValue(): void {
-        this.element.value = null
+        if (this)
+            this.element.value = null
     }
 
     destroy(): void {

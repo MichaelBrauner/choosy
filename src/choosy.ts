@@ -25,10 +25,10 @@ export default class Choosy {
             return
 
         this.store = new Store(this)
-        this.config = new Config(this, config)
-        this.navigation = new Navigation(this)
         this.event = new AppEvent()
         this.widget = new Widget(element, this)
+        this.config = new Config(this, config)
+        this.navigation = new Navigation(this)
         this.resultListVoter = new ResultListVoter(this)
         this.optionVoter = new OptionVoter(this)
         this.inputVoter = new InputVoter(this)

@@ -26,7 +26,7 @@ export default {
     },
     plugins: [
         typescript(),
-        uglify(),
+        // uglify(),
         multiInput(),
 
         babel({
@@ -36,10 +36,10 @@ export default {
         postcss({
             plugins: [
                 nested(),
-                cssnano(),
+                // cssnano(),
             ],
             extensions: ['.css'],
-            minimize: true,
+            // minimize: true,
             extract: path.resolve('dist/choosy.min.css')
         }),
 
