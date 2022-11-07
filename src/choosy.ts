@@ -20,7 +20,7 @@ export default class Choosy {
     inputVoter: InputVoter;
     widget: Widget;
 
-    constructor(element?: HTMLSelectElement, config?: Config) {
+    constructor(element?: HTMLSelectElement, config?: any[]) {
         if (!element)
             return
 

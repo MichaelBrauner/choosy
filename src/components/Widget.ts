@@ -17,7 +17,7 @@ export default class Widget extends Component {
         super(app, elements.widget);
 
         this.initialElement = new InitialElement(app, element)
-        this.resultList = new ResultList(this.element.querySelector('.' + classnames.result_list_container), app)
+        this.resultList = new ResultList(app, this.element.querySelector('.' + classnames.result_list_container))
         this.tagList = new TagList(app, this.element.querySelector('.' + classnames.list))
         this.initialElement.attachWidget(this.element)
         this.registerListeners()

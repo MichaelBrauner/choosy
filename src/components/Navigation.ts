@@ -66,7 +66,8 @@ export default class Navigation extends Component {
 
         } else {
 
-            if (this.selectedItem.isAddition()) {
+            if (!this.selectedItem.isAddition()) {
+
                 const index = results.indexOf(this.selectedItem)
 
                 if (results.length > index + 1) {
@@ -80,6 +81,7 @@ export default class Navigation extends Component {
                         this.selectedItem = results[0]
                     }
                 }
+
             } else {
                 this.selectedItem = results[0]
             }

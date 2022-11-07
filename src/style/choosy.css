@@ -1,3 +1,5 @@
+@import "preflight.css";
+
 .choosy-widget {
     line-height: 1.25rem;
     display: flex;
@@ -66,10 +68,19 @@
 .choosy-remove-button {
     width: 1.5rem;
     height: 1.5rem;
-    display: inline-block;
-    vertical-align: middle;
+    padding: 0;
+    line-height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    background-image: none;
     color: #6b7280;
     box-shadow: none;
+    -webkit-appearance: button;
+    text-transform: none;
+    border: none;
+    cursor: pointer;
 }
 
 .choosy-remove-button:focus {
@@ -97,7 +108,10 @@
 }
 
 .choosy-result-list {
-    overflow: scroll;
+    overflow: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .choosy-result-item {

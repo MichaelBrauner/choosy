@@ -28,7 +28,7 @@ export default class NavigationEvents extends Component {
         return this.$app.widget.resultList.isOpen(widget) && !this.$app.widget.resultList.list.isEmpty(widget)
     }
 
-    getWidgetFromEvent(event: Event): HTMLSelectElement {
+    getWidgetFromEvent(event: Event): HTMLDivElement {
         return (event.target as Element).closest(Widget.selector)
     }
 }

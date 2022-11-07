@@ -1,18 +1,19 @@
 import Option from "./option";
 import Component from "./components/Component";
+import Choosy from "./choosy";
+import OptionModel from "./model/OptionModel";
 
 export default class Store extends Component{
 
-    constructor(app) {
+    constructor(app: Choosy) {
         super(app);
     }
 
-    input = null
-    initialData = []
-    options = new Option(this.$app)
+    input: string|null = null
+    initialData: OptionModel[] = []
+    options: Option = new Option(this.$app)
 
     get inputIsEmpty() {
-
         if (!this.input)
             return true
 

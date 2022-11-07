@@ -2,6 +2,7 @@ import babel from 'rollup-plugin-babel';
 import {uglify} from "rollup-plugin-uglify";
 import postcss from 'rollup-plugin-postcss';
 import nested from 'postcss-nested';
+import postcss_import from 'postcss-import'
 import cssnano from 'cssnano';
 import multiInput from 'rollup-plugin-multi-input';
 import typescript from '@rollup/plugin-typescript';
@@ -36,6 +37,7 @@ export default {
         postcss({
             plugins: [
                 nested(),
+                postcss_import()
                 // cssnano(),
             ],
             extensions: ['.css'],

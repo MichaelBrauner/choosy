@@ -7,6 +7,7 @@ export default class OptionVoter extends Component{
     }
 
     canAdd() {
+        console.log(this.$app.store.options)
         return !this.$app.store.options.allTaken
     }
 }

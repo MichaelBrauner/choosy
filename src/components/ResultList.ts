@@ -1,14 +1,12 @@
 import ResultListList from "./ResultListList";
 import classnames from "../classnames";
 import Component from "./Component";
+import Choosy from "../choosy";
 
 
-/**
- * @extends Component
- */
-export default class ResultList extends Component{
+export default class ResultList extends Component {
 
-    list
+    list: ResultListList
 
     closeEvents = [
         'widget_clicked_outside',
@@ -17,24 +15,17 @@ export default class ResultList extends Component{
         'window_blur'
     ]
 
-    /**
-     *
-     * @param element
-     * @param {Choosy} app
-     */
-    constructor(element, app) {
+    constructor(app: Choosy, element: HTMLDivElement) {
         super(app, element);
 
         this.appendList()
         this.registerEventListener()
     }
 
-    registerEventListener() {
+    registerEventListener(): void {
 
         this.closeEvents.forEach(eventName => {
-            this.$event.on(eventName, () => {
-                this.closeResultBox()
-            })
+            this.$event.on(eventName, () => this.closeResultBox())
         })
 
         this.$event.on('input_input_debounced', () => {
@@ -55,22 +46,27 @@ export default class ResultList extends Component{
 
     }
 
-    createBox() {
+    createBox(): void {
         this.openResultBox()
         this.list.setResultBoxHeight()
     }
 
-    openResultBox() {
+    openResultBox(): void {
         if (!this.open) {
             this.element.style.display = 'block'
         }
     }
 
-    get open() {
+    get open(): boolean {
         return this.element.style.display !== 'none'
     }
 
-    closeResultBox() {
+    isOpen(widget: HTMLDivElement): boolean {
+        return (widget.querySelector(ResultList.selector) as HTMLDivElement)
+            .style.display === 'block'
+    }
+
+    closeResultBox(): void {
         this.#clean()
 
         if (this.open)
@@ -79,24 +75,20 @@ export default class ResultList extends Component{
         this.$navigation.clear()
     }
 
-    #clean() {
+    #clean(): void {
         this.destroy()
         this.appendList()
     }
 
-    appendList() {
+    appendList(): void {
         this.list = new ResultListList(this.$app, this.element)
     }
 
-    isOpen(widget) {
-        return widget.querySelector(ResultList.selector).style.display === 'block'
-    }
-
-    static get selector() {
+    static get selector(): string {
         return `.${classnames.result_list_container}`
     }
 
-    destroy() {
+    destroy(): void {
         this.list.destroy()
     }
 }

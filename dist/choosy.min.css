@@ -1,3 +1,104 @@
+/**
+1. Change the font styles in all browsers.
+2. Remove the margin in Firefox and Safari.
+*/
+button,
+input,
+optgroup,
+select,
+textarea {
+    font-family: inherit;
+    /* 1 */
+    font-size: 100%;
+    /* 1 */
+    line-height: 1.15;
+    /* 1 */
+    margin: 0;
+    /* 2 */
+}
+/**
+Remove the inheritance of text transform in Edge and Firefox.
+1. Remove the inheritance of text transform in Firefox.
+*/
+button,
+select {
+    /* 1 */
+    text-transform: none;
+}
+/**
+Correct the inability to style clickable types in iOS and Safari.
+*/
+button,
+[type='button'],
+[type='reset'],
+[type='submit'] {
+    -webkit-appearance: button;
+}
+/**
+Remove the inner border and padding in Firefox.
+*/
+::-moz-focus-inner {
+    border-style: none;
+    padding: 0;
+}
+/**
+Restore the focus styles unset by the previous rule.
+*/
+:-moz-focusring {
+    outline: 1px dotted ButtonText;
+}
+/**
+Remove the additional ':invalid' styles in Firefox.
+See: https://github.com/mozilla/gecko-dev/blob/2f9eacd9d3d995c937b4251a5557d95d494c9be1/layout/style/res/forms.css#L728-L737
+*/
+:-moz-ui-invalid {
+    box-shadow: none;
+}
+/**
+Remove the padding so developers are not caught out when they zero out 'fieldset' elements in all browsers.
+*/
+legend {
+    padding: 0;
+}
+/**
+Add the correct vertical alignment in Chrome and Firefox.
+*/
+progress {
+    vertical-align: baseline;
+}
+/**
+Correct the cursor style of increment and decrement buttons in Safari.
+*/
+::-webkit-inner-spin-button,
+::-webkit-outer-spin-button {
+    height: auto;
+}
+/**
+1. Correct the odd appearance in Chrome and Safari.
+2. Correct the outline style in Safari.
+*/
+[type='search'] {
+    -webkit-appearance: textfield;
+    /* 1 */
+    outline-offset: -2px;
+    /* 2 */
+}
+/**
+Remove the inner padding in Chrome and Safari on macOS.
+*/
+::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+/**
+1. Correct the inability to style clickable types in iOS and Safari.
+2. Change font properties to 'inherit' in Safari.
+*/
+::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    /* 1 */
+    font: inherit;
+    /* 2 */
+}
 .choosy-widget {
     line-height: 1.25rem;
     display: flex;
@@ -8,16 +109,13 @@
     border-width: 1px;
     border-radius: 0;
 }
-
-    .choosy-widget.disabled {
+.choosy-widget.disabled {
         background-color: #f3f4f6;
         cursor: not-allowed;
     }
-
-    .choosy-widget.disabled input {
+.choosy-widget.disabled input {
             cursor: not-allowed;
         }
-
 .choosy-input {
     background-color: transparent;
     display: inline-block;
@@ -30,7 +128,6 @@
     height: 1.5rem;
     padding: 0 !important;
 }
-
 .choosy-list {
     align-items: center;
     display: flex;
@@ -38,7 +135,6 @@
     padding: 0.25rem 0;
     min-height: 2.25rem;
 }
-
 .choosy-item {
     background-color: #4b5563;
     height: 1.5rem;
@@ -52,7 +148,6 @@
     margin-top: 0.125rem;
     margin-bottom: 0.125rem;
 }
-
 .choosy-item-text-span {
     margin-left: 0.5rem;
     overflow: hidden;
@@ -62,29 +157,33 @@
     line-height: 1.625;
     max-width: 20rem;
 }
-
 .choosy-remove-button {
     width: 1.5rem;
     height: 1.5rem;
-    display: inline-block;
-    vertical-align: middle;
+    padding: 0;
+    line-height: inherit;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    background-image: none;
     color: #6b7280;
     box-shadow: none;
+    -webkit-appearance: button;
+    text-transform: none;
+    border: none;
+    cursor: pointer;
 }
-
 .choosy-remove-button:focus {
     outline: none;
 }
-
 .choosy-remove-button:hover {
     color: #f4f5f7;
 }
-
 .choosy-remove-button-svg {
     height: 1.5rem;
     width: 1.5rem;
 }
-
 .choosy-result-list-container {
     position: absolute;
     background-color: white;
@@ -95,18 +194,18 @@
     z-index: 30;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)
 }
-
 .choosy-result-list {
-    overflow: scroll;
+    overflow: auto;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
-
 .choosy-result-item {
     cursor: pointer;
     position: relative;
     padding: 0.5rem 2.25rem 0.5rem 0.75rem;
     color: #4b5563;
 }
-
 .choosy-result-item.active {
     color: white;
     background-color: rgba(75, 85, 99, 1);

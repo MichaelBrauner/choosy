@@ -81,6 +81,7 @@ export default class ResultListList extends Component {
     }
 
     createResultList(): void {
+
         if (this.$app.resultListVoter.canOpenAll())
             this.createListAllResults()
 
