@@ -158,7 +158,7 @@ export default class ResultListList extends Component {
         }
     }
 
-    get results(): any[] {
+    get results(): OptionModel[] | any[] {
 
         if (this.$app.resultListVoter.canOpenAll())
             return this.$option.all ?? []
@@ -167,6 +167,10 @@ export default class ResultListList extends Component {
             return this.$textInput.hasMinLength ? this.$option.startingWithInput : []
 
         return [];
+    }
+
+    get noneSelectedResults(): OptionModel[] | any[] {
+        return this.results.filter((result) => !result.selected)
     }
 
     setResultBoxHeight(): void {
@@ -196,7 +200,7 @@ export default class ResultListList extends Component {
             });
     }
 
-    getActiveElement(): null|HTMLLIElement {
+    getActiveElement(): null | HTMLLIElement {
         const option = this.$navigation.item
 
         if (!option)
@@ -206,7 +210,7 @@ export default class ResultListList extends Component {
 
     }
 
-    #findOptionElementByDataOption(option): null|HTMLLIElement {
+    #findOptionElementByDataOption(option): null | HTMLLIElement {
 
         if (option.isAddition())
             return this.element.querySelector(`.${classnames.add_item}`)

@@ -13,83 +13,48 @@ export default class Navigation extends Component {
         this.events = new NavigationEvents(app)
     }
 
-    up() {
+    up(): void {
 
-        const results = this.$app.widget.resultList.list.results
-
-        if (this.selectedItem.isBlanc()) {
-
-            if (!this.$app.resultListVoter.canOpenAll()) {
-                this.switchToAdd();
-            } else {
-                this.selectedItem = results[results.length - 1]
-            }
-
-        } else {
-
-            const index = results.indexOf(this.selectedItem)
-
-            if (this.selectedItem.isAddition()) {
-                this.selectedItem = results[results.length - 1]
-            } else {
-
-                if (index <= results.length - 1) {
-                    this.selectedItem = results[index - 1]
-                }
-
-                if (!results[index - 1]) {
-
-                    if (!this.$app.resultListVoter.canOpenAll()) {
-                        this.switchToAdd()
-                    } else {
-                        this.selectedItem = results[results.length - 1]
-                    }
-
-                }
-            }
-
+        if (!this.isStart()) {
+            this.move('up')
+            return
         }
 
-        this.$event.emit('navigation_action', 'up')
+        if (!this.$app.resultListVoter.canOpenAll() && !this.selectedItem.isAddition()) {
+            this.switchToAdd()
+            return
+        }
+
+        this.move('toEnd')
+
     }
 
-    down() {
-        const results = this.$app.widget.resultList.list.results
+    down(): void {
 
-        if (!this.selectedItem) {
+        if (!this.isStart(true)) {
 
-            if (!results.length) {
-                this.selectedItem = OptionModel.Addition
-            } else {
-                this.selectedItem = results[0]
+            if (this.isNotLast()) {
+                this.move()
+                return
             }
 
-        } else {
-
-            if (!this.selectedItem.isAddition()) {
-
-                const index = results.indexOf(this.selectedItem)
-
-                if (results.length > index + 1) {
-                    this.selectedItem = results[index + 1]
-                }
-
-                if (results.length === index + 1) {
-                    if (!this.$app.resultListVoter.canOpenAll()) {
-                        this.selectedItem = OptionModel.Addition
-                    } else {
-                        this.selectedItem = results[0]
-                    }
-                }
-
-            } else {
-                this.selectedItem = results[0]
+            if (this.selectedItem.isAddition()) {
+                this.move('toFirst')
+                return
             }
 
+            if (this.hasNoValidResults()) {
+                this.switchToAdd()
+                return
+            }
         }
 
+        if (!this.$app.resultListVoter.canOpenAll()) {
+            this.selectedItem = OptionModel.Addition
+            return
+        }
 
-        this.$event.emit('navigation_action', 'down')
+        this.move('toFirst')
     }
 
     clear(): void {
@@ -110,5 +75,41 @@ export default class Navigation extends Component {
 
     private switchToAdd(): void {
         this.selectedItem = OptionModel.Addition
+    }
+
+    private move(direction: string = 'down'): void {
+        const results = this.freeResults
+
+        if (direction === 'down')
+            this.selectedItem = results[results.indexOf(this.selectedItem) + 1]
+
+        if (direction === 'up')
+            this.selectedItem = results[results.indexOf(this.selectedItem) - 1]
+
+        if (direction === 'toFirst')
+            this.selectedItem = results[0]
+
+        if (direction === 'toEnd')
+            this.selectedItem = results[results.length - 1]
+
+    }
+
+    private get freeResults(): OptionModel[] | any[] {
+        return this.$app.widget.resultList.list.noneSelectedResults;
+    }
+
+    private isStart(absolute = false): boolean {
+        return absolute
+            ? this.selectedItem.isBlanc()
+            : this.selectedItem.isBlanc() || this.selectedItem.isFirstOf(this.freeResults) || this.selectedItem.isAddition()
+    }
+
+    private isNotLast(): boolean {
+        const index = this.freeResults.indexOf(this.selectedItem)
+        return this.freeResults.length > index + 1;
+    }
+
+    private hasNoValidResults(): boolean {
+        return !this.freeResults.length;
     }
 }

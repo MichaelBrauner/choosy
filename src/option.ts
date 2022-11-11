@@ -146,10 +146,7 @@ export default class Option extends Component {
     }
 
     get allTaken(): boolean {
-
-        console.log(this.$config.options.limit)
         if (!this.$config.options.limit) return false
-
         return !(this.$app.config.options.limit > this.selected?.length)
     }
 

@@ -2,7 +2,7 @@
 
 # Choosy
 
-A standalone select widget written in vanilla javascript.
+A lightweight vanilla-js choice-picker written in typescript.
 
 # Installation
 

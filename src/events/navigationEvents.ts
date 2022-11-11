@@ -15,12 +15,14 @@ export default class NavigationEvents extends Component {
         }
     }
 
-    arrowDownEvent(event): void {
-        if (this.isNavigationEnabled(event)) this.$navigation.down()
+    arrowDownEvent(event: KeyboardEvent): void {
+        this.isNavigationEnabled(event) && this.$navigation.down()
+        this.$event.emit('navigation_action', 'down')
     }
 
-    arrowUpEvent(event): void {
-        if (this.isNavigationEnabled(event)) this.$navigation.up()
+    arrowUpEvent(event: KeyboardEvent): void {
+        this.isNavigationEnabled(event) && this.$navigation.up()
+        this.$event.emit('navigation_action', 'up')
     }
 
     isNavigationEnabled(event): boolean {

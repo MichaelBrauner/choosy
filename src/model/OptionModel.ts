@@ -32,10 +32,18 @@ export default class OptionModel {
         return this.value === undefined && this.isStateIndicator()
     }
 
+    isFirstOf(results: OptionModel[] | any[]): boolean {
+        return !results[this.getOwnIndexOf(results) - 1]
+    }
+
+    private getOwnIndexOf(results: OptionModel[] | any[]): number {
+        return results.indexOf(this);
+    }
+
     private isStateIndicator(): boolean {
         return this.content === undefined
-            && this.selected === undefined
-            && this.timestamp === undefined
+            && !this.selected
+            && !this.timestamp
     }
 
     decide(): boolean {
