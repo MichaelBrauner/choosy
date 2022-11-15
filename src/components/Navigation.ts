@@ -32,9 +32,8 @@ export default class Navigation extends Component {
     down(): void {
 
         if (!this.isStart(true)) {
-
             if (this.isNotLast()) {
-                this.move()
+                this.move('down')
                 return
             }
 
@@ -49,7 +48,7 @@ export default class Navigation extends Component {
             }
         }
 
-        if (!this.$app.resultListVoter.canOpenAll()) {
+        if (!this.$app.resultListVoter.canOpenAll() && this.isLast()) {
             this.selectedItem = OptionModel.Addition
             return
         }
@@ -105,8 +104,11 @@ export default class Navigation extends Component {
     }
 
     private isNotLast(): boolean {
-        const index = this.freeResults.indexOf(this.selectedItem)
-        return this.freeResults.length > index + 1;
+        return this.freeResults.length > this.freeResults.indexOf(this.selectedItem) + 1;
+    }
+
+    private isLast(): boolean {
+        return !this.isNotLast();
     }
 
     private hasNoValidResults(): boolean {
