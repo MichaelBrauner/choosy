@@ -11,7 +11,6 @@ export default class ResultListList extends Component {
 
         this.create(resultBox)
         this.registerEventListener()
-
     }
 
     create(resultBox: HTMLElement): void {
@@ -36,7 +35,6 @@ export default class ResultListList extends Component {
         this.$event.on('navigation_action', () => {
             this.createListAndScroll();
         })
-
     }
 
     chooseListener(): void {
@@ -50,9 +48,9 @@ export default class ResultListList extends Component {
                 return
             }
 
-            if (target.matches('li.' + classnames.add_item)) {
+            if (target.matches('li.' + classnames.add_item))
                 this.choose();
-            }
+
         })
     }
 

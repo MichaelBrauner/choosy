@@ -65,9 +65,7 @@ export default class InitialElement extends Component {
             option.selected = false
         })
 
-        if (triggerChangeEvent) {
-            this.triggerChangeEvent()
-        }
+       triggerChangeEvent && this.triggerChangeEvent()
 
     }
 
@@ -105,17 +103,15 @@ export default class InitialElement extends Component {
         })
     }
 
-    isOptionCreated(option): HTMLOptionElement {
+    isOptionCreated(option: OptionModel): HTMLOptionElement {
         return this.getAllOptions.find((select) => {
             return option.content === this.extractNewOptionsValue(select)
         })
     }
 
-    extractNewOptionsValue(selectOption: HTMLOptionElement): string|undefined {
-        if (this.isOptionNew(selectOption)) {
-            const value = selectOption.value
-            return value.replace('__new_option__', '')
-        }
+    extractNewOptionsValue(selectOption: HTMLOptionElement): string | undefined {
+        if (this.isOptionNew(selectOption))
+            return selectOption.value.replace('__new_option__', '')
 
         return undefined;
     }

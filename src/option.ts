@@ -14,7 +14,7 @@ export default class Option extends Component {
 
     get allButSelected() {
         return this.options.filter(option => {
-            return !!option.content && !this.isSelected(option)
+            return !!option.content && !this.isSelected(option) && !this.isNew(option)
         })
     }
 
@@ -22,7 +22,7 @@ export default class Option extends Component {
         return this.options.filter(option => option.content.includes(this.$store.input) && !option.selected)
     }
 
-    get equalToInput() {
+    get equalToInput(): OptionModel | undefined {
         return this.options.find(option => option.content === this.$store.input)
     }
 
@@ -42,13 +42,13 @@ export default class Option extends Component {
     }
 
     findByOptionElement(optionElement: HTMLOptionElement): OptionModel {
-        return this.options.find(option => {
 
+        return this.options.find(option => {
             if (optionElement.value === null)
                 return option.content === optionElement.innerHTML
 
             if (optionElement.value.startsWith('__new_option__')) {
-                return option.value === null && option.content === optionElement.innerHTML
+                return !option.value && option.content === optionElement.innerHTML
             }
 
             return option.value === optionElement.value && option.content === optionElement.innerHTML
@@ -60,15 +60,15 @@ export default class Option extends Component {
 
         if (option) {
             this.select(option)
-        } else {
-            if (this.$navigation.item) {
-                this.selectNavigationItem()
-            } else {
-                this.selectInputValue()
-            }
+            return
         }
 
-        this.$event.emit('option_chosen', option)
+        if (!this.$navigation.item.isBlanc()) {
+            this.selectNavigationItem()
+            return
+        }
+
+        this.selectInputValue()
     }
 
     append(option: OptionModel | undefined = undefined): OptionModel | null {
@@ -97,6 +97,8 @@ export default class Option extends Component {
             item.selected = true
             item.timestamp = Date.now()
         })
+
+        this.$event.emit('option_chosen', option)
     }
 
     unselect(option: OptionModel): void {
