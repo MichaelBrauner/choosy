@@ -22,7 +22,7 @@ describe('basic', () => {
         cy.get('select#cars').children().each(($el, index, list) => {
             cy.get('.choosy-widget').click('topRight')
 
-            // click on the first result and make sure the widget-list contains the selection on the right position
+            // click on the first result and make sure the widget-list contains the selection on the correct position
             cy.get('.choosy-result-list-container').find('.choosy-result-list').children().first().click()
                 .then(($el) => {
                     cy.get('.choosy-list').children().eq(index)

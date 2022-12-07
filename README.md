@@ -29,3 +29,31 @@ new Choosy(document.getElementById("cars"));
 ```
 
 > Be aware that Choosy automaticly restricts the input limit to `1` as soon as the `multiple` attribute is not set onto the `select` element.
+
+# Contributing
+
+Since Choosy is an open-source project you are very welcome to contribute by sending a PR.
+
+## Testing
+
+Choosy uses [Cypress](https://www.cypress.io/) for testing.  
+So you are able to start the testsuite with this command: 
+
+```shell
+yarn tests 
+```
+
+If you want to use the cypress client to debug your tests in a real browser, you have to start the `http-server` first then you can open the cypress-suite:
+
+```shell
+yarn http-server -c-1 &
+cypress open
+```
+
+Don't forget to stop the server after you are done: 
+
+```shell
+CTRL + c # to stop the cypress suite
+fg # to bring the http-server in the foreground
+CTRL + c # stop the http-server
+```

@@ -5,7 +5,17 @@ import Chainable = Cypress.Chainable;
 import classnames from "../../src/classnames";
 
 // @ts-ignore
-Cypress.Commands.add("addAllResultsToWidgetList", () => {
+Cypress.Commands.add("addAllResultsToWidgetList", (method?: string) => {
+
+    if (method === 'keyboard') {
+
+        // @ts-ignore
+        cy.get('body').tab()
+        cy.get('select#cars').children().each(() => cy.focused().type('{downArrow}{enter}'))
+
+        return
+    }
+
     cy.get('select#cars').children().each(() => {
         cy.get('.choosy-widget').click('topRight')
         cy.get('.choosy-result-list-container').find('.choosy-result-list').children().first().click()
@@ -13,7 +23,12 @@ Cypress.Commands.add("addAllResultsToWidgetList", () => {
 });
 
 // @ts-ignore
-Cypress.Commands.add("testUnselectionOfOneItem", (index: number | string) => {
+Cypress.Commands.add("testUnselectionOfOneItem", (index: number | string, method?: string) => {
+
+    if (method === 'keyboard') {
+        console.log('hey')
+        return
+    }
 
     resolvePositon(index, cy.get('.choosy-list').children('.choosy-item')).then((item) => {
 
@@ -96,7 +111,7 @@ declare global {
     namespace Cypress {
         interface Chainable {
             // @ts-ignore
-            addAllResultsToWidgetList(): Chainable<void>;
+            addAllResultsToWidgetList(method?: string): Chainable<void>;
 
             // @ts-ignore
             resultListShouldBeOpen(): Chainable<void>;
@@ -105,7 +120,7 @@ declare global {
             resultListShouldBeClosed(): Chainable<void>;
 
             // @ts-ignore
-            testUnselectionOfOneItem(index: number | string): Chainable<void>;
+            testUnselectionOfOneItem(index: number | string, method?: string): Chainable<void>;
 
             // @ts-ignore
             testAdditionToWidgetList(index: number | string, type?: string = 'click'): Chainable<void>;
@@ -117,6 +132,8 @@ declare global {
             resultListShouldNotContain(value: string): Chainable<void>
 
             resultListShouldContain(value: string): Chainable<void>
+
+
         }
     }
 }
