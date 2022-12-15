@@ -55,21 +55,13 @@ describe('basic', () => {
     it('should be possible to unselect last item', function () {
         cy.addAllResultsToWidgetList()
         cy.testUnselectionOfOneItem('last')
-
-        // make sure only one item is removed from widget list
-        cy.get('select#cars').children().each((_$el, _index, list) => {
-            cy.get('.choosy-list').children('.choosy-item').should('have.lengthOf', list.length - 1)
-        })
+        cy.exactlyOneItemGotRemoved()
     });
 
     it('should be possible to unselect second item (item in the middle)', function () {
         cy.addAllResultsToWidgetList()
         cy.testUnselectionOfOneItem(2)
-
-        // make sure only one item is removed from widget list
-        cy.get('select#cars').children().each((_$el, _index, list) => {
-            cy.get('.choosy-list').children('.choosy-item').should('have.lengthOf', list.length - 1)
-        })
+        cy.exactlyOneItemGotRemoved()
     });
 
     it('should be possible to reselect an unselected item', function () {

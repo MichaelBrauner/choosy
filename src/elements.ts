@@ -21,21 +21,24 @@ export default {
         return this.create('div', null, [classnames.list])
     },
 
-    get removeButton() {
+    get removeButton(): HTMLButtonElement {
         const btn = this.create('button', null, [classnames.remove_button])
         btn.append(this.removeSVG)
+
+        // disable tabbing into button
+        // because otherwise the input would not be accessible from keyboard navigation by tabbing anymore
+        // because buttons are in the way
+        btn.tabIndex = -1
         return btn
     },
 
     get removeSVG() {
-
         const svg = new DOMParser().parseFromString(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill="currentColor" class="${classnames.remove_button_svg}">
             <path fill-rule='evenodd'
                   d='M15.78 14.36a1 1 0 0 1-1.42 1.42l-2.82-2.83-2.83 2.83a1 1 0 1 1-1.42-1.42l2.83-2.82L7.3 8.7a1 1 0 0 1 1.42-1.42l2.83 2.83 2.82-2.83a1 1 0 0 1 1.42 1.42l-2.83 2.83 2.83 2.82z'></path>
             </svg>`, 'text/html');
 
         return svg.body.firstChild
-
     },
 
     get resultList() {

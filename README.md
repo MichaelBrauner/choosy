@@ -47,7 +47,13 @@ If you want to use the cypress client to debug your tests in a real browser, you
 
 ```shell
 yarn http-server -c-1 &
-cypress open
+yarn cypress open
+```
+
+You can actually use the `test.sh` script for testing: 
+
+```shell
+sh test.sh
 ```
 
 Don't forget to stop the server after you are done: 

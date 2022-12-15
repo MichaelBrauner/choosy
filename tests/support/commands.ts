@@ -8,11 +8,9 @@ import classnames from "../../src/classnames";
 Cypress.Commands.add("addAllResultsToWidgetList", (method?: string) => {
 
     if (method === 'keyboard') {
-
         // @ts-ignore
         cy.get('body').tab()
         cy.get('select#cars').children().each(() => cy.focused().type('{downArrow}{enter}'))
-
         return
     }
 
@@ -26,11 +24,20 @@ Cypress.Commands.add("addAllResultsToWidgetList", (method?: string) => {
 Cypress.Commands.add("testUnselectionOfOneItem", (index: number | string, method?: string) => {
 
     if (method === 'keyboard') {
-        console.log('hey')
-        return
+        // todo:
+        // in fact, it is not possible yet to unselect or even select an item other than the last one
+        // for this there might be some kind of marker necessary -
+        // from where you then can press the {Entf} or {Delete} button
+
+        if (index === 'last') {
+            // @ts-ignore
+            cy.get('body').tab();
+            cy.focused().type('{backspace}')
+            return
+        }
     }
 
-    resolvePositon(index, cy.get('.choosy-list').children('.choosy-item')).then((item) => {
+    resolvePosition(index, cy.get('.choosy-list').children('.choosy-item')).then((item) => {
 
         const value = item.text().trim().replace(/(\r?\n|\r)/gm, ' ')
         item.children('.choosy-remove-button').click()
@@ -51,14 +58,14 @@ Cypress.Commands.add("testUnselectionOfOneItem", (index: number | string, method
 Cypress.Commands.add('testAdditionToWidgetList', (index: int | string, type?: string = 'click') => {
 
     cy.get('.choosy-widget').click('topRight')
-    const item = resolvePositon(index, cy.get('.choosy-result-list-container').find('.choosy-result-list').children())
+    const item = resolvePosition(index, cy.get('.choosy-result-list-container').find('.choosy-result-list').children())
 
     if (type === 'click') {
 
         // click on the first result and make sure the widget-list contains the selection on the right position
         item.click()
             .then(($el) => {
-                resolvePositon(index, cy.get('.choosy-list').children())
+                resolvePosition(index, cy.get('.choosy-list').children())
                     .should('have.class', 'choosy-item')
                     .contains($el.text()).should('exist')
 
@@ -105,11 +112,20 @@ Cypress.Commands.add('resultListShouldContain', (value: string) => {
         .contains(value).should('exist')
 })
 
+// @ts-ignore
+Cypress.Commands.add('exactlyOneItemGotRemoved', () => {
+    cy.get('select#cars').children().each((_$el, _index, list) => {
+        if (_index + 1 === list.length) {
+            cy.get('.choosy-list').children('.choosy-item').should('have.lengthOf', list.length - 1)
+        }
+    })
+})
 
 // @ts-ignore
 declare global {
     namespace Cypress {
         interface Chainable {
+
             // @ts-ignore
             addAllResultsToWidgetList(method?: string): Chainable<void>;
 
@@ -133,12 +149,13 @@ declare global {
 
             resultListShouldContain(value: string): Chainable<void>
 
+            exactlyOneItemGotRemoved():Chainable<void>
 
         }
     }
 }
 
-function resolvePositon(index: number | string, subject): Chainable {
+function resolvePosition(index: number | string, subject): Chainable {
 
     if (typeof index === 'string') {
         subject[index]()
