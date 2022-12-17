@@ -68,7 +68,7 @@ describe('basic', () => {
         cy.exactlyOneItemGotRemoved()
     });
 
-    it.only('should not allow you to input empty items', function () {
+    it('should not allow you to input empty items', function () {
         cy.get('body').tab()
         cy.focused().type('{enter}')
         cy.resultListShouldBeOpen()

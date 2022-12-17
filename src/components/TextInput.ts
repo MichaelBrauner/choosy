@@ -20,7 +20,6 @@ export default class TextInput extends Component {
         })
 
         this.element.addEventListener('keydown', event => {
-
             if (event.key === 'Enter') {
                 this.enterKeyEvent(event)
             }
@@ -90,7 +89,7 @@ export default class TextInput extends Component {
     enterKeyEvent(event: Event): void {
         event.preventDefault()
 
-        if (this.hasMinLength || this.$app.optionVoter.canAdd())
+        if (!!this.hasMinLength || this.$app.optionVoter.canAdd())
             this.$option.choose()
     }
 

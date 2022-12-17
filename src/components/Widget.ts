@@ -82,7 +82,7 @@ export default class Widget extends Component {
     }
 
     limit(): void {
-        if (!this.$app.optionVoter.canAdd()) {
+        if (this.$app.store.options.allTaken) {
             this.tagList.textInput.element.maxLength = 0
         } else {
             this.tagList.textInput.element.maxLength = 524288

@@ -41,9 +41,7 @@ export default class OptionModel {
     }
 
     private isStateIndicator(): boolean {
-        return this.content === undefined
-            && !this.selected
-            && !this.timestamp
+        return !this.content && !this.selected && !this.timestamp
     }
 
     decide(): boolean {
