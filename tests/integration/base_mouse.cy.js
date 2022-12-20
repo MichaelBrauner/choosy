@@ -124,7 +124,7 @@ describe('basic', () => {
         cy.get('.choosy-widget').click()
         cy.get('.choosy-result-list-container').find('.choosy-result-list').should('exist')
 
-            // we to with 6 items (default is 5 - because the next item is visible by the drop shadow)
+            // we go with 6 items (default is 5 - because the next item is visible by the drop shadow)
             .children('.' + classnames.result_list_item + ':visible').should('have.lengthOf', 6)
             .contains('Saab').should('exist')
             .contains('Audi').should('not.exist')

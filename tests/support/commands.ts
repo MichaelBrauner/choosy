@@ -57,10 +57,10 @@ Cypress.Commands.add("testUnselectionOfOneItem", (index: number | string, method
 // @ts-ignore
 Cypress.Commands.add('testAdditionToWidgetList', (index: int | string, type?: string = 'click') => {
 
-    cy.get('.choosy-widget').click('topRight')
-    const item = resolvePosition(index, cy.get('.choosy-result-list-container').find('.choosy-result-list').children())
-
     if (type === 'click') {
+
+        cy.get('.choosy-widget').click('topRight')
+        const item = resolvePosition(index, cy.get('.choosy-result-list-container').find('.choosy-result-list').children())
 
         // click on the first result and make sure the widget-list contains the selection on the right position
         item.click()
@@ -74,6 +74,20 @@ Cypress.Commands.add('testAdditionToWidgetList', (index: int | string, type?: st
 
         // result container closes on selection
         cy.get('.choosy-result-list-container').should('not.be.visible')
+    }
+
+    if (type === 'keyboard') {
+        // @ts-ignore
+        cy.get('body').tab();
+
+        for (let i = 0; i <= index; i++) {
+            cy.focused().type('{downArrow}')
+        }
+
+        cy.focused().type('{enter}')
+
+        // result container do not close on selection
+        cy.get('.choosy-result-list-container').should('be.visible')
     }
 })
 
@@ -121,6 +135,28 @@ Cypress.Commands.add('exactlyOneItemGotRemoved', () => {
     })
 })
 
+Cypress.Commands.add('widgetShouldNotContain', (value: string, index?: number) => {
+    if (index) {
+        cy.get('.choosy-list').children()['eq'](index)
+            .should('have.class', 'choosy-item')
+            .should('contain', value)
+            .should('not.exist')
+    } else {
+        cy.get('.choosy-list').children().should('not.contain', value)
+    }
+})
+
+Cypress.Commands.add('widgetShouldContain', (value: string, index?: number) => {
+    if (index) {
+        cy.get('.choosy-list').children()['eq'](index)
+            .should('have.class', 'choosy-item')
+            .should('contain', value)
+            .should('exist')
+    } else {
+        cy.get('.choosy-list').children().should('contain', value)
+    }
+})
+
 // @ts-ignore
 declare global {
     namespace Cypress {
@@ -149,8 +185,10 @@ declare global {
 
             resultListShouldContain(value: string): Chainable<void>
 
-            exactlyOneItemGotRemoved():Chainable<void>
+            exactlyOneItemGotRemoved(): Chainable<void>
 
+            widgetShouldNotContain(value: string, index?: number): Chainable<void>
+            widgetShouldContain(value: string, index?: number): Chainable<void>
         }
     }
 }

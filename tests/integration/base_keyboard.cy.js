@@ -68,6 +68,36 @@ describe('basic', () => {
         cy.exactlyOneItemGotRemoved()
     });
 
+    it('should be possible to reselect an unselected item', function () {
+        cy.testAdditionToWidgetList(0, 'keyboard')
+
+        cy.widgetShouldContain('Volvo', 0)
+
+        cy.testAdditionToWidgetList(0, 'keyboard')
+
+        cy.widgetShouldContain('Volvo', 0)
+        cy.widgetShouldContain('Saab', 1)
+
+        cy.testUnselectionOfOneItem('last', 'keyboard')
+
+        cy.widgetShouldContain('Volvo', 0)
+        cy.widgetShouldNotContain('Saab')
+
+        cy.testAdditionToWidgetList(0, 'keyboard')
+
+        cy.widgetShouldContain('Saab', 1)
+    });
+
+    it('should limit the amount of shown items by default', function () {
+        cy.get('body').tab()
+        cy.get('.choosy-result-list-container').find('.choosy-result-list').should('exist')
+
+            // we go with 6 items (default is 5 - because the next item is visible by the drop shadow)
+            .children('.' + classnames.result_list_item + ':visible').should('have.lengthOf', 6)
+            .contains('Saab').should('exist')
+            .contains('Audi').should('not.exist')
+    })
+
     it('should not allow you to input empty items', function () {
         cy.get('body').tab()
         cy.focused().type('{enter}')
