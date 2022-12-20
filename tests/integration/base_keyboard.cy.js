@@ -88,6 +88,34 @@ describe('basic', () => {
         cy.widgetShouldContain('Saab', 1)
     });
 
+    it.only('should be possible to write and select from result list', function () {
+
+        // type 'Vol' - case-sensitive
+        cy.get('input').type('Vol')
+
+        // wait 200ms for debouncing
+        cy.wait(200)
+
+        // 'Add new' should exist inside the result list
+        cy.get('.choosy-result-list-container').find('.choosy-result-list')
+            .should('exist')
+            .children('.' + classnames.result_list_item)
+            .should('have.lengthOf', 2)
+            .contains('Add new').should('exist')
+
+        // 'Vol' should exist inside the result list
+        cy.get('.choosy-result-list-container').find('.choosy-result-list')
+            .should('exist')
+            .children('.' + classnames.result_list_item)
+            .should('have.lengthOf', 2)
+            .contains('Volvo').should('exist')
+
+        cy.focused().type('{downArrow}{enter}')
+        cy.resultListShouldBeOpen()
+        cy.testWidgetContent('Volvo')
+        cy.testSelectContent('volvo')
+    })
+
     it('should limit the amount of shown items by default', function () {
         cy.get('body').tab()
         cy.get('.choosy-result-list-container').find('.choosy-result-list').should('exist')
