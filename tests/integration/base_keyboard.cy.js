@@ -88,7 +88,7 @@ describe('basic', () => {
         cy.widgetShouldContain('Saab', 1)
     });
 
-    it.only('should be possible to write and select from result list', function () {
+    it('should be possible to write and select from result list', function () {
 
         // type 'Vol' - case-sensitive
         cy.get('input').type('Vol')
@@ -115,6 +115,29 @@ describe('basic', () => {
         cy.testWidgetContent('Volvo')
         cy.testSelectContent('volvo')
     })
+
+    it('should be possible to add and remove an additional item', function () {
+
+        // type 'Opel' into the widget input
+        cy.get('input').type('Opel')
+
+        // 'Add new' should exist inside the result list no other item should be found
+        cy.get('.choosy-result-list-container').find('.choosy-result-list').should('exist')
+            .children('.' + classnames.result_list_item).should('have.lengthOf', 1)
+            .contains('Add new').should('exist')
+
+        // navigate to first item (the 'Add new') and select it.
+        cy.focused().type('{downArrow}{enter}')
+
+        cy.resultListShouldBeOpen()
+        cy.testWidgetContent('Opel')
+        cy.testSelectContent('__new_option__Opel')
+
+        // remove the new item
+        cy.focused().type('{backspace}')
+        cy.resultListShouldNotContain('Opel')
+
+    });
 
     it('should limit the amount of shown items by default', function () {
         cy.get('body').tab()
