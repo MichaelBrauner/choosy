@@ -1,9 +1,9 @@
-.test-container {
+[class^="test-container"] {
     width: 250px;
     margin-top: 3rem;
 }
 
-.test-container > .choosy-widget {
+[class^="test-container"] > .choosy-widget {
     border: 1px solid #6b7280;
     margin-top: .25rem;
 }

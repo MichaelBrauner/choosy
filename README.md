@@ -53,7 +53,7 @@ yarn cypress open
 You can actually use the `test.sh` script for testing: 
 
 ```shell
-sh test.sh
+sh test
 ```
 
 Don't forget to stop the server after you are done: 
