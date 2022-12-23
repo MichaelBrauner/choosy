@@ -14,10 +14,7 @@ Cypress.Commands.add("addAllResultsToWidgetList", (method?: string) => {
         return
     }
 
-    cy.get('select#cars').children().each(() => {
-        cy.get('.choosy-widget').click('topRight')
-        cy.get('.choosy-result-list-container').find('.choosy-result-list').children().first().click()
-    })
+    cy.get('select#cars').children().each(() => cy.add(0))
 });
 
 // @ts-ignore
@@ -157,6 +154,13 @@ Cypress.Commands.add('widgetShouldContain', (value: string, index?: number) => {
     }
 })
 
+Cypress.Commands.add('add', (index: number, type: string = 'click') => {
+    if (type === 'click') {
+        cy.get('.choosy-widget').click('topRight')
+        resolvePosition(index, cy.get('.choosy-result-list-container').find('.choosy-result-list').children()).click()
+    }
+})
+
 // @ts-ignore
 declare global {
     namespace Cypress {
@@ -177,6 +181,8 @@ declare global {
             // @ts-ignore
             testAdditionToWidgetList(index: number | string, type?: string = 'click'): Chainable<void>;
 
+            add(index: number, type?: string): Chainable<void>
+
             testWidgetContent(value: string, length?: number): Chainable<void>;
 
             testSelectContent(value: string): Chainable<void>;
@@ -188,12 +194,13 @@ declare global {
             exactlyOneItemGotRemoved(): Chainable<void>
 
             widgetShouldNotContain(value: string, index?: number): Chainable<void>
+
             widgetShouldContain(value: string, index?: number): Chainable<void>
         }
     }
 }
 
-function resolvePosition(index: number | string, subject): Chainable {
+export function resolvePosition(index: number | string, subject): Chainable {
 
     if (typeof index === 'string') {
         subject[index]()
