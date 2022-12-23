@@ -18,6 +18,11 @@ export default class TagList extends Component {
 
     appendTextInput(): void {
         this.textInput = new TextInput(this.$app, elements.textInput)
+
+        if (!this.$config?.options.enabled) {
+            this.textInput.disable()
+        }
+
         this.element.append(this.textInput.element)
     }
 

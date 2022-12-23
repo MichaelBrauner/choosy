@@ -46,6 +46,7 @@ export default class TextInput extends Component {
         )
 
         this.element.addEventListener('focus', () => {
+            console.log('hey')
             this.$event.emit('input_focus')
         })
 
@@ -121,5 +122,9 @@ export default class TextInput extends Component {
 
     destroy(): void {
         this.$event.off('input_cleared', this.resetValue)
+    }
+
+    disable(): void {
+       this.element.setAttribute('disabled', '')
     }
 }

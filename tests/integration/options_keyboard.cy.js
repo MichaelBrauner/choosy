@@ -9,8 +9,8 @@ describe('options_keyboard', () => {
     })
 
     it.only('should disable the widget', function () {
-        cy.get('.test-container_disabled').tab()
-        cy.get(classnames.widget).should('have.class', 'disabled')
+        cy.get('.' + classnames.widget).should('have.class', 'disabled')
+        cy.get('.' + classnames.input).should('be.disabled')
     });
 
     it('should limit the widget', function () {
