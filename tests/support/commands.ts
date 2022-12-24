@@ -159,6 +159,16 @@ Cypress.Commands.add('add', (index: number, type: string = 'click') => {
         cy.get('.choosy-widget').click('topRight')
         resolvePosition(index, cy.get('.choosy-result-list-container').find('.choosy-result-list').children()).click()
     }
+
+    if (type === 'keyboard') {
+
+        // yes - I know this is not keyboard navigation - but cypress tab plugin is apita
+        // and this time it also should scope it to a test container.
+        // this is too much - so we sick to activating the widget by clicking it
+        cy.get('.choosy-widget').click('topRight')
+        cy.focused().type('{downArrow}{enter}')
+    }
+
 })
 
 // @ts-ignore
