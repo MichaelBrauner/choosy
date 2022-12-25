@@ -6,8 +6,7 @@ export default class Config extends Component {
 
     options = {
         enabled : true,
-        limit: null,
-        openOnFocus: true
+        limit: null
     }
 
     constructor(app: Choosy, options) {

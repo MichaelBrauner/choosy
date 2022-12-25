@@ -8,20 +8,13 @@ describe('options_keyboard', () => {
         cy.visit('/tests/templates/options')
     })
 
-    it.only('should limit the widget', function () {
+    it('should limit the widget', function () {
         cy.get('.test-container_limited_2').within(() => {
 
             cy.add(0, 'keyboard')
             cy.add(0, 'keyboard')
 
-            cy.get('.choosy-widget').click('topRight')
-            cy.resultListShouldBeClosed()
-
-            cy.get('.' + classnames.input)
-                .should('be.focused')
-                .type('Volvo')
-                .should('have.value', '')
-            cy.resultListShouldBeClosed()
+            cy.isLocked()
 
             cy.testUnselectionOfOneItem('last')
             cy.focused().type('Au')
@@ -29,16 +22,10 @@ describe('options_keyboard', () => {
 
             cy.add(0, 'keyboard')
 
-            cy.get('.' + classnames.input)
-                .should('be.focused')
-                .type('Volvo')
-                .should('have.value', '')
+            cy.isLocked()
         });
 
         cy.resultListShouldBeClosed()
     });
 
-    it('should not open on focus if disabled', function () {
-
-    });
 })

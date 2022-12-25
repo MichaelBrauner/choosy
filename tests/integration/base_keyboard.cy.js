@@ -158,4 +158,11 @@ describe('basic', () => {
             .should('have.length', 0)
     });
 
+    it.only('should limit to 1 when multiple attribute is not set', function () {
+        cy.get('.test-container-single').within(() => {
+            cy.add(0, 'keyboard')
+            cy.isLocked()
+        })
+    });
+
 })

@@ -171,6 +171,17 @@ Cypress.Commands.add('add', (index: number, type: string = 'click') => {
 
 })
 
+Cypress.Commands.add('isLocked', () => {
+    cy.get('.choosy-widget').click('topRight')
+    cy.resultListShouldBeClosed()
+
+    cy.get('.' + classnames.input)
+        .should('be.focused')
+        .type('Volvo')
+        .should('have.value', '')
+    cy.resultListShouldBeClosed()
+})
+
 // @ts-ignore
 declare global {
     namespace Cypress {
@@ -206,6 +217,8 @@ declare global {
             widgetShouldNotContain(value: string, index?: number): Chainable<void>
 
             widgetShouldContain(value: string, index?: number): Chainable<void>
+
+            isLocked(): Chainable<void>
         }
     }
 }

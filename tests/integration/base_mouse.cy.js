@@ -130,4 +130,11 @@ describe('basic', () => {
             .contains('Audi').should('not.exist')
     })
 
+    it.only('should limit to 1 when multiple attribute is not set', function () {
+        cy.get('.test-container-single').within(() => {
+            cy.add(0)
+            cy.isLocked()
+        })
+    });
+
 })

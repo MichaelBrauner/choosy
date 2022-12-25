@@ -1,7 +1,5 @@
 /// <reference types="cypress" />
 
-import classnames from "../../src/classnames";
-
 describe('options_mouse', () => {
 
     beforeEach(() => {
@@ -15,14 +13,7 @@ describe('options_mouse', () => {
             cy.add(0)
             cy.add(0)
 
-            cy.get('.choosy-widget').click('topRight')
-            cy.resultListShouldBeClosed()
-
-            cy.get('.' + classnames.input)
-                .should('be.focused')
-                .type('Volvo')
-                .should('have.value', '')
-            cy.resultListShouldBeClosed()
+            cy.isLocked()
 
             cy.testUnselectionOfOneItem(1)
             cy.focused().type('Au')
@@ -30,17 +21,10 @@ describe('options_mouse', () => {
 
             cy.add(0)
 
-            cy.get('.' + classnames.input)
-                .should('be.focused')
-                .type('Volvo')
-                .should('have.value', '')
+            cy.isLocked()
         });
 
         cy.resultListShouldBeClosed()
     })
-
-    it('should not open on focus if disabled', function () {
-
-    });
 
 })
