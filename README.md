@@ -4,14 +4,19 @@
 
 A lightweight vanilla-js choice-picker written in typescript.
 
-# Installation
+- [Setup](#setup)
+- [Options](#options)
+  - [enabled](#enabled)
+  - [limit](#limit)
+- [Contributing](#contributing)
+  - [Testing](#testing)
+
+# Setup 
 
 ```
 npm i @michael-brauner/choosy
 yarn add @michael-brauner/choosy
 ```
-
-# Setup
 
 ```javascript
 import Choosy from "@michael-brauner/choosy";
@@ -28,7 +33,49 @@ new Choosy(document.getElementById("cars"));
 </select>
 ```
 
-> Be aware that Choosy automaticly restricts the input limit to `1` as soon as the `multiple` attribute is not set onto the `select` element.
+> Be aware that Choosy automatically restricts the input limit to `1` as soon as the `multiple` attribute is not set
+> onto the `select` element.
+
+# Options
+
+Your choosy widget can be configured with some options.  
+Just pass your options object as second argument into the `Choosy` constructor.
+
+After the widget got initialized the full `Choosy` object got stored inside a `__x` variable.
+This way you can access all public methods even after initialisation.
+
+## enabled
+
+Enable or disable your Choosy.
+
+This causes that no input is possible anymore, the widget is locked at the current state and can't be focused anymore.
+A greyed-out effect visualizes this behavior and the cursor shows `not-allowed`.
+
+```javascript
+new Choosy(document.getElementById("cars_disabled"), {
+    enabled: false
+});
+```
+
+It is possible to enable / disable the whole widget after initialisation:
+
+```javascript
+// enable the widget
+getElementById("cars_disabled").__x.enable()
+
+// disable the widget again
+getElementById("cars_disabled").__x.disable()
+```
+
+## limit
+
+Limits the items you can select with your `Choosy` widget.
+
+```javascript
+new Choosy(document.getElementById("cars_limited_2"), {
+    limit: 2
+})
+```
 
 # Contributing
 
@@ -37,26 +84,27 @@ Since Choosy is an open-source project you are very welcome to contribute by sen
 ## Testing
 
 Choosy uses [Cypress](https://www.cypress.io/) for testing.  
-So you are able to start the testsuite with this command: 
+So you are able to start the testsuite with this command:
 
 ```shell
 yarn tests 
 ```
 
-If you want to use the cypress client to debug your tests in a real browser, you have to start the `http-server` first then you can open the cypress-suite:
+If you want to use the cypress client to debug your tests in a real browser, you have to start the `http-server` first
+then you can open the cypress-suite:
 
 ```shell
 yarn http-server -c-1 &
 yarn cypress open
 ```
 
-You can actually use the `test.sh` script for testing: 
+Actually you can use the `test` script for testing:
 
 ```shell
 sh test
 ```
 
-Don't forget to stop the server after you are done: 
+Don't forget to stop the server after you are done:
 
 ```shell
 CTRL + c # to stop the cypress suite
