@@ -25,6 +25,9 @@ new Choosy(document.getElementById("cars"));
 ```
 
 ```html
+<!-- import this inside of the `head` of your html document -->
+<link rel="stylesheet" href="/dist/choosy.min.css">
+
 <select name="cars" id="cars" multiple>
     <option value="volvo">Volvo</option>
     <option value="saab">Saab</option>
