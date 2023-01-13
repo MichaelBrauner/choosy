@@ -7,7 +7,6 @@ import ResultListVoter from "./voter/ResultListVoter";
 import OptionVoter from "./voter/OptionVoter";
 import InputVoter from "./voter/InputVoter";
 import AppEvent from "./event";
-import './style/choosy.css'
 
 export default class Choosy {
 
