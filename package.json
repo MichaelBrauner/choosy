@@ -40,6 +40,10 @@
     "tests": "server-test http://127.0.0.1:8080 'cypress run'"
   },
   "keywords": [
-    "cookie"
+    "choices",
+    "choice-picker",
+    "select-widget",
+    "javascript",
+    "typescript"
   ]
 }
