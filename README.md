@@ -84,6 +84,14 @@ new Choosy(document.getElementById("cars_limited_2"), {
 
 Since Choosy is an open-source project you are very welcome to contribute by sending a PR.
 
+## Compiling
+To apply the latest changes and compile it to a ready-to-go package into the `dist` folder you can use the following commands:
+
+```shell
+postcss ./src/style/choosy.css -o ./dist/choosy.min.css
+rollup -c 
+```
+
 ## Testing
 
 Choosy uses [Cypress](https://www.cypress.io/) for testing.  
