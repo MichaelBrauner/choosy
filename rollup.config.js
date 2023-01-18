@@ -3,9 +3,7 @@ import {uglify} from "rollup-plugin-uglify";
 import typescript from '@rollup/plugin-typescript';
 
 export default {
-    input: [
-        {'choosy.min': 'src/choosy.ts'},
-    ],
+    input: 'src/choosy.ts',
     onwarn(warning, rollupWarn) {
         if (warning.code !== 'CIRCULAR_DEPENDENCY') {
             rollupWarn(warning);
@@ -13,9 +11,9 @@ export default {
     },
     output: {
         name: 'Choosy',
-        dir: 'dist',
+        file: 'dist/choosy.min.js',
         format: 'esm',
-        sourcemap: 'inline',
+        sourcemap: true,
     },
     plugins: [
         uglify(),
